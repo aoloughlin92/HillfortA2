@@ -5,7 +5,7 @@ import androidx.appcompat.app.AppCompatActivity
 import org.wit.hillfort.R
 import org.wit.hillfort.main.MainApp
 
-class PlacemarkListActivity : AppCompatActivity() {
+class HillfortListActivity : AppCompatActivity() {
 
     lateinit var app: MainApp
 
