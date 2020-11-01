@@ -44,6 +44,12 @@ class MapActivity : AppCompatActivity(), OnMapReadyCallback, GoogleMap.OnMarkerD
         map.moveCamera(CameraUpdateFactory.newLatLngZoom(loc, location.zoom))
     }
 
+    override fun onMarkerClick(marker: Marker): Boolean {
+        val loc = LatLng(location.lat, location.lng)
+        marker.setSnippet("GPS : " + loc.toString())
+        return false
+    }
+
     override fun onMarkerDragStart(marker: Marker) {
     }
 
