@@ -8,10 +8,11 @@ import org.wit.hillfort.models.HillfortModel
 
 class MainApp : Application(), AnkoLogger {
 
-    val hillforts = HillfortMemStore()
+    lateinit var hillforts: HillfortMemStore
 
     override fun onCreate() {
         super.onCreate()
+        hillforts = HillfortMemStore()
         info("Hillfort started")
         //hillforts.add(HillfortModel("One", "About one..."))
         //hillforts.add(HillfortModel("Two", "About two..."))
