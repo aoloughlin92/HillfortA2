@@ -50,6 +50,7 @@ class HillfortJSONStore : HillfortStore, AnkoLogger {
             foundHillfort.zoom = hillfort.zoom
             logAll();
         }
+        deserialize()
     }
 
 

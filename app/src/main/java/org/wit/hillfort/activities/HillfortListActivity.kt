@@ -38,7 +38,7 @@ class HillfortListActivity : AppCompatActivity(), HillfortListener {
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item?.itemId) {
             R.id.item_add -> startActivityForResult<HillfortActivity>(0)
-            //R.id.item_settings -> startActivityForResult<SettingsActivity>(0)
+            R.id.item_settings -> startActivityForResult<SettingsActivity>(0)
             R.id.item_logout -> {
                 app.currentUser = UserModel()
                 startActivityForResult<WelcomeActivity>(0)
