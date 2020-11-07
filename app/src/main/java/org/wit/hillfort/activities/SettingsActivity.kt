@@ -27,6 +27,20 @@ class SettingsActivity : AppCompatActivity(), AnkoLogger {
         val user = app.currentUser
         settingsEmail.setText(user.email)
         settingsPassword.setText(user.password)
+        val countHillforts = app.hillforts.findAll().size
+        val countVisited = app.hillforts.countVisited()
+        if( countHillforts>0){
+            val percentage = (countVisited*100)/countHillforts
+            userStats.setText("""Total Hillforts: ${countHillforts} 
+            |Number Visited: ${countVisited}
+            |Percentage Visited: $percentage %
+        """.trimMargin())
+        }
+        else{
+            userStats.setText("""Total Hillforts: ${countHillforts} 
+                |Number Visited: ${countVisited}
+            """.trimMargin())
+        }
 
         toolbar.title = title
         setSupportActionBar(toolbar)

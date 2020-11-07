@@ -23,6 +23,15 @@ class HillfortMemStore : HillfortStore, AnkoLogger {
         logAll();
 
     }
+    override fun countVisited(): Int {
+        var count = 0
+        for(hillfort in hillforts){
+            if(hillfort.visited ==true){
+                count ++
+            }
+        }
+        return count
+    }
 
     override fun delete(hillfort: HillfortModel) {
         hillforts.remove(hillfort)

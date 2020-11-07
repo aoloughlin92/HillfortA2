@@ -29,6 +29,7 @@
     <string name="signup_failed">Email is already registered.</string>
     <string name="login_failed">Login Failed. Incorrect email or password.</string>
     <string name="settings_message">User Settings</string>
+    <string name="stats_message">User Stats</string>
     <string name="button_update">Update</string>
     <string name="update_failed">Email is already registered.</string>
     <string name="menu_up">Up</string>

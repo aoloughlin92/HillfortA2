@@ -33,6 +33,16 @@ class HillfortJSONStore : HillfortStore, AnkoLogger {
         return hillforts
     }
 
+    override fun countVisited(): Int {
+        var count = 0
+        for(hillfort in hillforts){
+            if(hillfort.visited ==true){
+                count ++
+            }
+        }
+        return count
+    }
+
     override fun create(hillfort: HillfortModel) {
         hillfort.id = generateRandomId()
         hillforts.add(hillfort)
