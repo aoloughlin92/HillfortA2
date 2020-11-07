@@ -47,9 +47,6 @@ class HillfortActivity : AppCompatActivity(), AnkoLogger {
 
 
     var edit = false
-    var changeVisStatus = false
-    var visited = false
-    var visDate = ""
 
     if (intent.hasExtra("hillfort_edit")) {
       edit = true
@@ -57,6 +54,9 @@ class HillfortActivity : AppCompatActivity(), AnkoLogger {
       hillfortTitle.setText(hillfort.title)
       description.setText(hillfort.description)
       checkBox.setChecked(hillfort.visited)
+      if(hillfort.visited ==true){
+        visitDate.setText("Date Visited: ${hillfort.date}")
+      }
       hillfortImage.setImageBitmap(readImageFromPath(this, hillfort.image))
       if (hillfort.image != null) {
         chooseImage.setText(R.string.change_hillfort_image)
@@ -69,10 +69,12 @@ class HillfortActivity : AppCompatActivity(), AnkoLogger {
       if(isChecked) {
         hillfort.visited = true
         hillfort.date = sdf.format(Date())
+        visitDate.setText("Date Visited: ${hillfort.date}")
       }
       else{
         hillfort.visited = false
         hillfort.date = ""
+        visitDate.setText("")
       }
     })
 
