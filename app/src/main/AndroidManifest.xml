@@ -27,6 +27,9 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity android:name=".activities.WelcomeActivity"></activity>
+        <activity android:name=".activities.SignUpActivity"></activity>
+        <activity android:name=".activities.LoginActivity"></activity>
         <activity
             android:name=".activities.MapActivity"
             android:label="@string/title_activity_map"></activity>
