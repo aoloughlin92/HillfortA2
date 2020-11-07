@@ -4,7 +4,6 @@ import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
 import androidx.appcompat.app.AppCompatActivity
-import kotlinx.android.synthetic.main.activity_hillfort_list.*
 import kotlinx.android.synthetic.main.activity_settings.*
 import kotlinx.android.synthetic.main.activity_settings.toolbar
 import org.jetbrains.anko.AnkoLogger
@@ -25,19 +24,19 @@ class SettingsActivity : AppCompatActivity(), AnkoLogger {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_settings)
         app = application as MainApp
-        var user = app.currentUser
+        val user = app.currentUser
 
         toolbar.title = title
         setSupportActionBar(toolbar)
 
         btnUpdate.setOnClickListener(){
-            var email = settingsEmail.text.toString()
+            val email = settingsEmail.text.toString()
             val findByEmail = app.users.findByEmail(email)
             if (findByEmail != null && !email.equals(user.email)) {
                 toast(R.string.update_failed)
             }
             else{
-                var password = settingsPassword.text.toString()
+                val password = settingsPassword.text.toString()
                 user.email = email
                 user.password = password
                 info("Hillfort User Updated with email: $email and password: $password")
