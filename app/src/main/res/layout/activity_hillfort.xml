@@ -98,6 +98,16 @@
                     android:textColor="@color/colorPrimary"
                     android:textSize="16sp"/>
 
+                <CheckBox
+                    android:id="@+id/checkBox"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="144dp"
+                    android:layout_marginTop="68dp"
+                    android:text="Visited?"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
                 <Button
                     android:id="@+id/btnAdd"
                     android:layout_width="match_parent"

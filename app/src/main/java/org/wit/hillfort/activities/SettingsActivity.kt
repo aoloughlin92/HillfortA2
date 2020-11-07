@@ -25,6 +25,8 @@ class SettingsActivity : AppCompatActivity(), AnkoLogger {
         setContentView(R.layout.activity_settings)
         app = application as MainApp
         val user = app.currentUser
+        settingsEmail.setText(user.email)
+        settingsPassword.setText(user.password)
 
         toolbar.title = title
         setSupportActionBar(toolbar)
@@ -54,6 +56,9 @@ class SettingsActivity : AppCompatActivity(), AnkoLogger {
             R.id.item_logout -> {
                 app.currentUser = UserModel()
                 startActivityForResult<WelcomeActivity>(0)
+            }
+            R.id.item_up ->{
+                finish()
             }
         }
         return super.onOptionsItemSelected(item)

@@ -21,6 +21,7 @@ class HillfortMemStore : HillfortStore, AnkoLogger {
         hillfort.id = getId()
         hillforts.add(hillfort)
         logAll();
+
     }
 
     override fun delete(hillfort: HillfortModel) {

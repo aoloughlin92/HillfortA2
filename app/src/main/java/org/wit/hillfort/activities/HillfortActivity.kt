@@ -4,6 +4,7 @@ import android.content.Context
 import android.content.Intent
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
+import android.icu.text.DateFormat
 import android.net.Uri
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
@@ -21,9 +22,14 @@ import org.wit.hillfort.helpers.showImagePicker
 import org.wit.hillfort.main.MainApp
 import org.wit.hillfort.models.HillfortModel
 import org.wit.hillfort.models.Location
+import java.text.SimpleDateFormat
+import java.time.LocalDateTime
+import java.util.*
+
 
 class HillfortActivity : AppCompatActivity(), AnkoLogger {
 
+  val sdf = SimpleDateFormat("dd/MMM/yyyy")
   var hillfort = HillfortModel()
   lateinit var app : MainApp
   val IMAGE_REQUEST = 1
@@ -39,23 +45,41 @@ class HillfortActivity : AppCompatActivity(), AnkoLogger {
 
     app = application as MainApp
 
+
     var edit = false
+    var changeVisStatus = false
+    var visited = false
+    var visDate = ""
 
     if (intent.hasExtra("hillfort_edit")) {
       edit = true
       hillfort = intent.extras?.getParcelable<HillfortModel>("hillfort_edit")!!
       hillfortTitle.setText(hillfort.title)
       description.setText(hillfort.description)
+      checkBox.setChecked(hillfort.visited)
       hillfortImage.setImageBitmap(readImageFromPath(this, hillfort.image))
       if (hillfort.image != null) {
         chooseImage.setText(R.string.change_hillfort_image)
       }
       btnAdd.setText(R.string.save_hillfort)
     }
-    
+
+
+    checkBox.setOnCheckedChangeListener ({ buttonView, isChecked ->
+      if(isChecked) {
+        hillfort.visited = true
+        hillfort.date = sdf.format(Date())
+      }
+      else{
+        hillfort.visited = false
+        hillfort.date = ""
+      }
+    })
+
     btnAdd.setOnClickListener() {
       hillfort.title = hillfortTitle.text.toString()
       hillfort.description = description.text.toString()
+      info("add button hillfort Status is ${hillfort.visited} and date ${hillfort.date} ")
       if (hillfort.title.isEmpty()) {
         toast (R.string.enter_hillfort_title)
       }else{
@@ -82,6 +106,7 @@ class HillfortActivity : AppCompatActivity(), AnkoLogger {
       startActivityForResult(intentFor<MapActivity>().putExtra("location", location), LOCATION_REQUEST)
     }
 
+
   }
 
   override fun onCreateOptionsMenu(menu: Menu): Boolean {
@@ -95,6 +120,9 @@ class HillfortActivity : AppCompatActivity(), AnkoLogger {
       }
       R.id.item_delete ->{
         app.hillforts.delete(hillfort)
+        finish()
+      }
+      R.id.item_up ->{
         finish()
       }
     }

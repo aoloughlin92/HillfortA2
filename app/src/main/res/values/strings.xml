@@ -31,4 +31,5 @@
     <string name="settings_message">User Settings</string>
     <string name="button_update">Update</string>
     <string name="update_failed">Email is already registered.</string>
+    <string name="menu_up">Up</string>
 </resources>

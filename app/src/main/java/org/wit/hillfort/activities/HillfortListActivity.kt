@@ -43,6 +43,9 @@ class HillfortListActivity : AppCompatActivity(), HillfortListener {
                 app.currentUser = UserModel()
                 startActivityForResult<WelcomeActivity>(0)
             }
+            R.id.item_up ->{
+                finish()
+            }
         }
         return super.onOptionsItemSelected(item)
     }
