@@ -4,5 +4,5 @@ interface HillfortStore {
     fun findAll(): List<HillfortModel>
     fun create(hillfort: HillfortModel)
     fun update(hillfort: HillfortModel)
-    fun delete(placemark: HillfortModel)
+    fun delete(hillfort: HillfortModel)
 }
