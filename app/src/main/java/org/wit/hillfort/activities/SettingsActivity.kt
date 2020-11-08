@@ -1,5 +1,6 @@
 package org.wit.hillfort.activities
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
@@ -70,7 +71,9 @@ class SettingsActivity : AppCompatActivity(), AnkoLogger {
             R.id.item_settings -> startActivityForResult<SettingsActivity>(0)
             R.id.item_logout -> {
                 app.currentUser = UserModel()
-                startActivityForResult<WelcomeActivity>(0)
+                var intent = Intent(this, WelcomeActivity::class.java)
+                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
+                startActivity(intent);
             }
             R.id.item_up ->{
                 finish()
