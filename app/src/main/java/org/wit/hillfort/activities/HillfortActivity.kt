@@ -59,7 +59,8 @@ class HillfortActivity : AppCompatActivity(), AnkoLogger {
         visitDate.setText("Date Visited: ${hillfort.date}")
       }
       if(hillfort.images.size>0) {
-        hillfortImage.setImageBitmap(readImageFromPath(this, hillfort.images.first()))
+        var imagestring = hillfort.images.first()
+        hillfortImage.setImageBitmap(readImageFromPath(this, imagestring))
       }
       if (hillfort.images.first() != null) {
         chooseImage.setText(R.string.change_hillfort_image)
