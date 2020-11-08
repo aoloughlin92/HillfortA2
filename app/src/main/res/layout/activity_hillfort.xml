@@ -81,11 +81,12 @@
                     android:textColor="@color/colorPrimary"
                     android:textSize="16sp" />
 
-                <ImageView
-                    android:id="@+id/hillfortImage"
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/recyclerView2"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    app:srcCompat="@mipmap/ic_launcher" />
+                    android:layout_height="match_parent"
+                    android:scrollbars="vertical"
+                     />
 
                 <Button
                     android:id="@+id/hillfortLocation"

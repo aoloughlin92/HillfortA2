@@ -1,16 +1,14 @@
 package org.wit.hillfort.activities
 
-import android.content.Context
+import android.annotation.SuppressLint
 import android.content.Intent
-import android.graphics.Bitmap
-import android.graphics.BitmapFactory
-import android.icu.text.DateFormat
-import android.net.Uri
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
+import androidx.recyclerview.widget.LinearLayoutManager
 import kotlinx.android.synthetic.main.activity_hillfort.*
+import kotlinx.android.synthetic.main.activity_hillfort.recyclerView2
 import org.jetbrains.anko.AnkoLogger
 import org.jetbrains.anko.info
 import org.jetbrains.anko.intentFor
@@ -23,11 +21,10 @@ import org.wit.hillfort.main.MainApp
 import org.wit.hillfort.models.HillfortModel
 import org.wit.hillfort.models.Location
 import java.text.SimpleDateFormat
-import java.time.LocalDateTime
 import java.util.*
 
 
-class HillfortActivity : AppCompatActivity(), AnkoLogger {
+class HillfortActivity : AppCompatActivity(), AnkoLogger, ImageListener {
 
   val sdf = SimpleDateFormat("dd/MMM/yyyy")
   var hillfort = HillfortModel()
@@ -36,6 +33,7 @@ class HillfortActivity : AppCompatActivity(), AnkoLogger {
   val LOCATION_REQUEST = 2
   //var location = Location(52.245696, -7.139102, 15f)
 
+  @SuppressLint("ResourceAsColor")
   override fun onCreate(savedInstanceState: Bundle?) {
     super.onCreate(savedInstanceState)
     setContentView(R.layout.activity_hillfort)
@@ -45,8 +43,13 @@ class HillfortActivity : AppCompatActivity(), AnkoLogger {
 
     app = application as MainApp
 
+    val layoutManager = LinearLayoutManager(this)
+    recyclerView2.layoutManager = layoutManager
+
 
     var edit = false
+
+
 
     if (intent.hasExtra("hillfort_edit")) {
       edit = true
@@ -58,12 +61,15 @@ class HillfortActivity : AppCompatActivity(), AnkoLogger {
       if(hillfort.visited ==true){
         visitDate.setText("Date Visited: ${hillfort.date}")
       }
-      if(hillfort.images.size>0) {
-        var imagestring = hillfort.images.first()
-        hillfortImage.setImageBitmap(readImageFromPath(this, imagestring))
-      }
-      if (hillfort.images.first() != null) {
+
+      showImages(hillfort.images)
+
+      if (hillfort.images.size < 4) {
         chooseImage.setText(R.string.change_hillfort_image)
+      }
+      if(hillfort.images.size >3){
+        chooseImage.setEnabled(false)
+        chooseImage.setBackgroundColor(R.color.colorInactive)
       }
       btnAdd.setText(R.string.save_hillfort)
     }
@@ -115,6 +121,16 @@ class HillfortActivity : AppCompatActivity(), AnkoLogger {
 
   }
 
+  override fun onDeleteClick(image: String) {
+    hillfort.images.remove(image)
+    showImages(hillfort.images)
+  }
+
+  fun showImages (images: List<String>) {
+    recyclerView2.adapter = ImageAdapter(images, this)
+    recyclerView2.adapter?.notifyDataSetChanged()
+  }
+
   override fun onCreateOptionsMenu(menu: Menu): Boolean {
     menuInflater.inflate(R.menu.menu_hillfort, menu)
     return super.onCreateOptionsMenu(menu)
@@ -141,7 +157,7 @@ class HillfortActivity : AppCompatActivity(), AnkoLogger {
       IMAGE_REQUEST -> {
         if (data != null) {
           hillfort.images.add(data.getData().toString())
-          hillfortImage.setImageBitmap(readImage(this, resultCode, data))
+          showImages(hillfort.images)
           chooseImage.setText(R.string.change_hillfort_image)
         }
       }
