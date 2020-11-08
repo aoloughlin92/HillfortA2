@@ -53,6 +53,7 @@ class HillfortActivity : AppCompatActivity(), AnkoLogger {
       hillfort = intent.extras?.getParcelable<HillfortModel>("hillfort_edit")!!
       hillfortTitle.setText(hillfort.title)
       description.setText(hillfort.description)
+      notes.setText(hillfort.notes)
       checkBox.setChecked(hillfort.visited)
       if(hillfort.visited ==true){
         visitDate.setText("Date Visited: ${hillfort.date}")
@@ -81,7 +82,7 @@ class HillfortActivity : AppCompatActivity(), AnkoLogger {
     btnAdd.setOnClickListener() {
       hillfort.title = hillfortTitle.text.toString()
       hillfort.description = description.text.toString()
-      info("add button hillfort Status is ${hillfort.visited} and date ${hillfort.date} ")
+      hillfort.notes = notes.text.toString()
       if (hillfort.title.isEmpty()) {
         toast (R.string.enter_hillfort_title)
       }else{

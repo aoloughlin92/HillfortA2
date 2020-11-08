@@ -103,8 +103,7 @@
                 <CheckBox
                     android:id="@+id/checkBox"
                     android:layout_width="match_parent"
-                    android:layout_height="70dp"
-                    android:layout_marginStart="50dp"
+                    android:layout_height="wrap_content"
                     android:layout_marginTop="68dp"
                     android:text="Visited?"
                     app:layout_constraintStart_toStartOf="parent"
@@ -113,11 +112,23 @@
                 <TextView
                     android:id="@+id/visitDate"
                     android:layout_width="match_parent"
-                    android:layout_height="30dp"
-                    android:layout_marginStart="50dp"
+                    android:layout_height="33dp"
                     android:layout_marginTop="68dp"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
+
+                <EditText
+                    android:id="@+id/notes"
+                    android:layout_width="match_parent"
+                    android:layout_height="115dp"
+                    android:layout_margin="8dp"
+                    android:hint="@string/hint_hillfortNotes"
+                    android:inputType="textMultiLine"
+                    android:maxLength="300"
+                    android:maxLines="5"
+                    android:padding="8dp"
+                    android:textColor="@color/colorPrimaryDark"
+                    android:textSize="14sp" />
 
                 <Button
                     android:id="@+id/btnAdd"

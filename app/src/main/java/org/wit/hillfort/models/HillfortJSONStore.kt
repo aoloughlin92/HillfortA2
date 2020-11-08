@@ -60,6 +60,7 @@ class HillfortJSONStore : HillfortStore, AnkoLogger {
             foundHillfort.zoom = hillfort.zoom
             foundHillfort.date = hillfort.date
             foundHillfort.visited = hillfort.visited
+            foundHillfort.notes = hillfort.notes
             logAll();
         }
         serialize()
