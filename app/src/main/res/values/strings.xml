@@ -36,8 +36,8 @@
     <string name="button_update">Update</string>
     <string name="update_failed">Email is already registered.</string>
     <string name="menu_up">Up</string>
-
-    <string name="hillfortPicture">Placemark Image</string>
-    <string name="hillfortTitle">Placemark Title</string>
-    <string name="hillfortDescription">Placemark Description</string>
+    <string name="menu_saveHillfort">Save</string>
+    <string name="hillfortPicture">Hillfort Image</string>
+    <string name="hillfortTitle">Hillfort Title</string>
+    <string name="hillfortDescription">Hillfort Description</string>
 </resources>

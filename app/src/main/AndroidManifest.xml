@@ -37,7 +37,7 @@
         <activity android:name=".views.hillfort.HillfortView" />
         <activity android:name=".views.hillfortlist.HillfortListView" />
         <activity
-            android:name=".activities.HillfortMapsActivity"
+            android:name=".views.map.HillfortMapView"
             android:label="@string/title_activity_hillfort_maps"></activity>
     </application>
 

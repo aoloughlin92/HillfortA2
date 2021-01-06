@@ -119,40 +119,29 @@
                     app:layout_constraintTop_toBottomOf="@+id/hillfortLocation" />
 
 
-                <ImageView
-                    android:id="@+id/hillfortImage"
-                    android:layout_width="0dp"
-                    android:layout_height="150dp"
-                    android:layout_marginStart="8dp"
-                    android:layout_marginTop="8dp"
-                    android:layout_marginEnd="8dp"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintHorizontal_bias="0.0"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/chooseImage"
-                    app:srcCompat="@mipmap/ic_launcher" />
-
                 <CheckBox
                     android:id="@+id/checkBox"
                     android:layout_width="104dp"
                     android:layout_height="37dp"
                     android:layout_marginStart="8dp"
+                    android:layout_marginTop="8dp"
                     android:layout_marginEnd="8dp"
                     android:text="Visited?"
                     app:layout_constraintEnd_toStartOf="@+id/visitDate"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/hillfortImage" />
+                    app:layout_constraintTop_toBottomOf="@+id/recyclerView2" />
 
                 <TextView
                     android:id="@+id/visitDate"
                     android:layout_width="179dp"
                     android:layout_height="31dp"
                     android:layout_marginStart="8dp"
+                    android:layout_marginTop="8dp"
                     android:layout_marginEnd="8dp"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintHorizontal_bias="0.36"
                     app:layout_constraintStart_toEndOf="@+id/checkBox"
-                    app:layout_constraintTop_toBottomOf="@+id/hillfortImage" />
+                    app:layout_constraintTop_toBottomOf="@+id/recyclerView2" />
 
                 <EditText
                     android:id="@+id/notes"
@@ -178,28 +167,15 @@
                     android:layout_width="379dp"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="8dp"
+                    android:layout_marginTop="8dp"
                     android:layout_marginEnd="8dp"
+
                     android:scrollbars="vertical"
-
                     app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="0.312"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/btnAdd" />
+                    app:layout_constraintTop_toBottomOf="@+id/chooseImage" />
 
-                <Button
-                    android:id="@+id/btnAdd"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_margin="16dp"
-                    android:layout_marginTop="231dp"
-                    android:background="@color/colorAccent"
-                    android:paddingTop="8dp"
-                    android:paddingBottom="8dp"
-                    android:stateListAnimator="@null"
-                    android:text="@string/button_addHillfort"
-                    android:textColor="@color/colorPrimary"
-                    android:textSize="16sp"
-                    app:layout_constraintTop_toBottomOf="@+id/notes"
-                    tools:layout_editor_absoluteX="15dp" />
             </androidx.constraintlayout.widget.ConstraintLayout>
         </ScrollView>
 

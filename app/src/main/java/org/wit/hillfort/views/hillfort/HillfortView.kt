@@ -2,7 +2,6 @@ package org.wit.hillfort.views.hillfort
 
 import android.annotation.SuppressLint
 import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
@@ -10,15 +9,13 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import kotlinx.android.synthetic.main.activity_hillfort.*
 import kotlinx.android.synthetic.main.activity_hillfort.recyclerView2
 import org.jetbrains.anko.AnkoLogger
-import org.jetbrains.anko.info
 import org.jetbrains.anko.toast
 import org.wit.hillfort.R
-import org.wit.hillfort.activities.ImageAdapter
-import org.wit.hillfort.activities.ImageListener
 import org.wit.hillfort.models.HillfortModel
+import org.wit.hillfort.views.BaseView
 
 
-class HillfortView : AppCompatActivity(), AnkoLogger, ImageListener {
+class HillfortView : BaseView(), AnkoLogger, ImageListener {
 
   lateinit var presenter: HillfortPresenter
 
@@ -34,11 +31,15 @@ class HillfortView : AppCompatActivity(), AnkoLogger, ImageListener {
   override fun onCreate(savedInstanceState: Bundle?) {
     super.onCreate(savedInstanceState)
     setContentView(R.layout.activity_hillfort)
-    toolbarAdd.title = title
-    setSupportActionBar(toolbarAdd)
-    info("Hillfort Activity started..")
+    //toolbarAdd.title = title
+    //setSupportActionBar(toolbarAdd)
+    init(toolbarAdd)
+    //info("Hillfort Activity started..")
 
-    presenter = HillfortPresenter(this)
+    //presenter = HillfortPresenter(this)
+
+    presenter = initPresenter(HillfortPresenter(this)) as HillfortPresenter
+
 
     //app = application as MainApp
 
@@ -89,7 +90,7 @@ class HillfortView : AppCompatActivity(), AnkoLogger, ImageListener {
     */
       presenter.doCheckVisited(isChecked)
     })
-
+   /*
     btnAdd.setOnClickListener() {
 
       var title = hillfortTitle.text.toString()
@@ -100,7 +101,7 @@ class HillfortView : AppCompatActivity(), AnkoLogger, ImageListener {
         toast (R.string.enter_hillfort_title)
       }else{
         presenter.doAddOrSave(title, description, notes)
-        /*
+
         if(edit) {
           app.hillforts.update(hillfort.copy())
         }else{
@@ -110,11 +111,11 @@ class HillfortView : AppCompatActivity(), AnkoLogger, ImageListener {
         setResult(AppCompatActivity.RESULT_OK)
         finish()
 
-         */
+
       }
     }
 
-    /*
+
     chooseImage.setOnClickListener {
       showImagePicker(this, IMAGE_REQUEST)
     }
@@ -144,7 +145,7 @@ class HillfortView : AppCompatActivity(), AnkoLogger, ImageListener {
   }
 
   @SuppressLint("ResourceAsColor")
-  fun showHillfort(hillfort: HillfortModel){
+  override fun showHillfort(hillfort: HillfortModel){
 
     hillfortTitle.setText(hillfort.title)
     description.setText(hillfort.description)
@@ -162,7 +163,7 @@ class HillfortView : AppCompatActivity(), AnkoLogger, ImageListener {
       chooseImage.setEnabled(false)
       chooseImage.setBackgroundColor(R.color.colorInactive)
     }
-    btnAdd.setText(R.string.save_hillfort)
+    //btnAdd.setText(R.string.save_hillfort)
   }
 
   override fun onDeleteClick(image: String) {
@@ -177,8 +178,12 @@ class HillfortView : AppCompatActivity(), AnkoLogger, ImageListener {
 
   override fun onCreateOptionsMenu(menu: Menu): Boolean {
     menuInflater.inflate(R.menu.menu_hillfort, menu)
-    if(presenter.edit) menu.getItem(1).setVisible(true)
+    //if(presenter.edit) menu.getItem(1).setVisible(true)
     return super.onCreateOptionsMenu(menu)
+  }
+
+  override fun showVisitDate(res: String){
+    visitDate.setText(res)
   }
 
 
@@ -192,6 +197,17 @@ class HillfortView : AppCompatActivity(), AnkoLogger, ImageListener {
       }
       R.id.item_up ->{
         presenter.doCancel()
+      }
+      R.id.item_save -> {
+        if (hillfortTitle.text.toString().isEmpty()) {
+          toast(R.string.enter_hillfort_title)
+        } else {
+          presenter.doAddOrSave(
+            hillfortTitle.text.toString(),
+            description.text.toString(),
+            notes.text.toString()
+          )
+        }
       }
     }
     return super.onOptionsItemSelected(item)
@@ -220,5 +236,9 @@ class HillfortView : AppCompatActivity(), AnkoLogger, ImageListener {
         }
       }
     }*/
+  }
+
+  override fun onBackPressed() {
+    presenter.doCancel()
   }
 }

@@ -1,4 +1,4 @@
-package org.wit.hillfort.activities
+package org.wit.hillfort.views.map
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
@@ -11,11 +11,14 @@ import kotlinx.android.synthetic.main.activity_hillfort_maps.*
 import org.wit.hillfort.R
 import org.wit.hillfort.helpers.readImageFromPath
 import org.wit.hillfort.main.MainApp
+import org.wit.hillfort.models.HillfortModel
 
-class HillfortMapsActivity : AppCompatActivity(), GoogleMap.OnMarkerClickListener  {
+class HillfortMapView : AppCompatActivity(), GoogleMap.OnMarkerClickListener  {
 
-    lateinit var map: GoogleMap
-    lateinit var app: MainApp
+    //lateinit var map: GoogleMap
+    //lateinit var app: MainApp
+
+    lateinit var presenter: HillfortMapPresenter
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -23,17 +26,30 @@ class HillfortMapsActivity : AppCompatActivity(), GoogleMap.OnMarkerClickListene
 
         setSupportActionBar(toolbar)
         toolbar.title = title
+        presenter = HillfortMapPresenter(this)
         mapView.onCreate(savedInstanceState);
 
-        app = application as MainApp
+        //app = application as MainApp
 
         mapView.getMapAsync {
-            map = it
-            configureMap()
+            //map = it
+            //configureMap()
+            presenter.doPopulateMap(it);
         }
     }
 
-    fun configureMap() {
+    fun showHillfort(hillfort: HillfortModel){
+        currentTitle.text = hillfort.title
+        currentDescription.text = hillfort.description
+        if(hillfort!!.images.size > 0) {
+            currentImage.setImageBitmap(readImageFromPath(this, hillfort!!.images.get(0)))
+        }
+        else{
+            currentImage.setImageBitmap(null)
+        }
+    }
+
+    /*fun configureMap() {
         map.uiSettings.setZoomControlsEnabled(true)
         app.hillforts.findAll().forEach {
             val loc = LatLng(it.lat, it.lng)
@@ -43,6 +59,8 @@ class HillfortMapsActivity : AppCompatActivity(), GoogleMap.OnMarkerClickListene
             map.setOnMarkerClickListener(this)
         }
     }
+
+     */
 
     override fun onDestroy() {
         super.onDestroy()
@@ -69,7 +87,7 @@ class HillfortMapsActivity : AppCompatActivity(), GoogleMap.OnMarkerClickListene
         mapView.onSaveInstanceState(outState)
     }
 
-    override fun onMarkerClick(marker: Marker): Boolean {
+    /*override fun onMarkerClick(marker: Marker): Boolean {
         val tag = marker.tag as Long
         val hillfort = app.hillforts.findById(tag)
         currentTitle.text = hillfort!!.title
@@ -81,7 +99,12 @@ class HillfortMapsActivity : AppCompatActivity(), GoogleMap.OnMarkerClickListene
             currentImage.setImageBitmap(null)
         }
         return false
+    }*/
+    override fun onMarkerClick(marker: Marker): Boolean {
+        presenter.doMarkerSelected(marker)
+        return true
     }
+
 
 
 }

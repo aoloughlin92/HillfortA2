@@ -10,10 +10,11 @@ import org.jetbrains.anko.intentFor
 import org.wit.hillfort.R
 import org.wit.hillfort.activities.WelcomeActivity
 import org.wit.hillfort.models.HillfortModel
+import org.wit.hillfort.views.BaseView
 import org.wit.hillfort.views.hillfort.HillfortView
 
 
-class HillfortListView : AppCompatActivity(), HillfortListener {
+class HillfortListView : BaseView(), HillfortListener {
 
     //lateinit var app: MainApp
 
@@ -25,16 +26,17 @@ class HillfortListView : AppCompatActivity(), HillfortListener {
         setContentView(R.layout.activity_hillfort_list)
         //app = application as MainApp
 
-        toolbar.title = title
+        //toolbar.title = title
         setSupportActionBar(toolbar)
 
-        presenter = HillfortListPresenter(this)
+        presenter = initPresenter(HillfortListPresenter(this)) as HillfortListPresenter
 
 
         val layoutManager = LinearLayoutManager(this)
         recyclerView.layoutManager = layoutManager
-        recyclerView.adapter = HillfortAdapter(presenter.getHillforts(),this)
-        recyclerView.adapter?.notifyDataSetChanged()
+        presenter.loadHillforts()
+        //recyclerView.adapter = HillfortAdapter(presenter.getHillforts(),this)
+        //recyclerView.adapter?.notifyDataSetChanged()
         //loadHillforts()
 
     }
@@ -65,28 +67,35 @@ class HillfortListView : AppCompatActivity(), HillfortListener {
         return super.onOptionsItemSelected(item)
     }
     override fun onHillfortClick(hillfort: HillfortModel) {
-        startActivityForResult(intentFor<HillfortView>().putExtra("hillfort_edit", hillfort), 0)
+        presenter.doEditHillfort(hillfort)
+        //startActivityForResult(intentFor<HillfortView>().putExtra("hillfort_edit", hillfort), 0)
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        loadHillforts()
+        presenter.loadHillforts()
         super.onActivityResult(requestCode, resultCode, data)
     }
 
+    /*
     private fun loadHillforts() {
         //showHillforts(app.hillforts.findAll())
         showHillforts(presenter.getHillforts())
     }
+    */
 
-    fun showHillforts (hillforts: List<HillfortModel>) {
+    override fun showHillforts (hillforts: List<HillfortModel>) {
         recyclerView.adapter = HillfortAdapter(hillforts, this)
         recyclerView.adapter?.notifyDataSetChanged()
     }
+
+/*
 
     fun logoutUser() {
         var intent = Intent(this, WelcomeActivity::class.java)
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
         startActivity(intent);
     }
+
+     */
 }
 
