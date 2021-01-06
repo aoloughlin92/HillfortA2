@@ -13,8 +13,9 @@ import com.google.android.gms.maps.model.Marker
 import com.google.android.gms.maps.model.MarkerOptions
 import org.wit.hillfort.R
 import org.wit.hillfort.models.Location
+import org.wit.hillfort.views.BaseView
 
-class EditLocationView : AppCompatActivity(), GoogleMap.OnMarkerDragListener, GoogleMap.OnMarkerClickListener {
+class EditLocationView : BaseView(), GoogleMap.OnMarkerDragListener, GoogleMap.OnMarkerClickListener {
 
     lateinit var map: GoogleMap
     lateinit var presenter: EditLocationPresenter
@@ -32,7 +33,7 @@ class EditLocationView : AppCompatActivity(), GoogleMap.OnMarkerDragListener, Go
             map = it
             map.setOnMarkerDragListener(this)
             map.setOnMarkerClickListener(this)
-            presenter.initMap(map)
+            presenter.doConfigureMap(map)
         }
     }
 
@@ -74,7 +75,7 @@ class EditLocationView : AppCompatActivity(), GoogleMap.OnMarkerDragListener, Go
         location.zoom = map.cameraPosition.zoom
 
          */
-        presenter.doUpdateLocation(marker.position.latitude, marker.position.longitude, map.cameraPosition.zoom)
+        presenter.doUpdateLocation(marker.position.latitude, marker.position.longitude)
     }
 
     override fun onBackPressed() {
@@ -83,6 +84,6 @@ class EditLocationView : AppCompatActivity(), GoogleMap.OnMarkerDragListener, Go
         setResult(Activity.RESULT_OK, resultIntent)
         finish()
         super.onBackPressed()*/
-        presenter.doOnBackPressed()
+        presenter.doSave()
     }
 }

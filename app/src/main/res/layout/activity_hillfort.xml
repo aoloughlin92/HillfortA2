@@ -63,7 +63,7 @@
 
                 <EditText
                     android:id="@+id/description"
-                    android:layout_width="400dp"
+                    android:layout_width="match_parent"
                     android:layout_height="77dp"
                     android:layout_margin="8dp"
                     android:layout_marginStart="8dp"
@@ -82,8 +82,8 @@
 
                 <Button
                     android:id="@+id/hillfortLocation"
-                    android:layout_width="376dp"
-                    android:layout_height="46dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
                     android:layout_margin="16dp"
                     android:layout_marginStart="8dp"
                     android:layout_marginTop="8dp"
@@ -106,7 +106,6 @@
                     android:layout_height="wrap_content"
                     android:layout_margin="16dp"
                     android:layout_marginStart="8dp"
-                    android:layout_marginTop="8dp"
                     android:layout_marginEnd="8dp"
                     android:background="@color/colorAccent"
                     android:paddingTop="8dp"
@@ -116,13 +115,13 @@
                     android:textSize="16sp"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/hillfortLocation" />
+                    app:layout_constraintTop_toBottomOf="@+id/mapView" />
 
 
                 <CheckBox
                     android:id="@+id/checkBox"
-                    android:layout_width="104dp"
-                    android:layout_height="37dp"
+                    android:layout_width="110dp"
+                    android:layout_height="28dp"
                     android:layout_marginStart="8dp"
                     android:layout_marginTop="8dp"
                     android:layout_marginEnd="8dp"
@@ -133,8 +132,8 @@
 
                 <TextView
                     android:id="@+id/visitDate"
-                    android:layout_width="179dp"
-                    android:layout_height="31dp"
+                    android:layout_width="123dp"
+                    android:layout_height="28dp"
                     android:layout_marginStart="8dp"
                     android:layout_marginTop="8dp"
                     android:layout_marginEnd="8dp"
@@ -164,17 +163,28 @@
 
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/recyclerView2"
-                    android:layout_width="379dp"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="8dp"
                     android:layout_marginTop="8dp"
                     android:layout_marginEnd="8dp"
 
-                    android:scrollbars="vertical"
+                    android:scrollbars="none"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintHorizontal_bias="0.312"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/chooseImage" />
+
+                <com.google.android.gms.maps.MapView
+                    android:id="@+id/mapView"
+                    android:layout_width="339dp"
+                    android:layout_height="171dp"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginTop="8dp"
+                    android:layout_marginEnd="8dp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/hillfortLocation" />
 
             </androidx.constraintlayout.widget.ConstraintLayout>
         </ScrollView>

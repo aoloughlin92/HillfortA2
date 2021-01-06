@@ -79,7 +79,8 @@ class HillfortJSONStore : HillfortStore, AnkoLogger {
     }
 
     override fun delete(hillfort: HillfortModel) {
-        hillforts.remove(hillfort)
+        val foundHillfort: HillfortModel? = hillforts.find{it.id == hillfort.id}
+        hillforts.remove(foundHillfort)
         serialize()
     }
 

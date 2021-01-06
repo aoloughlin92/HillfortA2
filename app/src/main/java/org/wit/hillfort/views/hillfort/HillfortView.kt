@@ -6,6 +6,7 @@ import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.google.android.gms.maps.GoogleMap
 import kotlinx.android.synthetic.main.activity_hillfort.*
 import kotlinx.android.synthetic.main.activity_hillfort.recyclerView2
 import org.jetbrains.anko.AnkoLogger
@@ -14,38 +15,28 @@ import org.wit.hillfort.R
 import org.wit.hillfort.models.HillfortModel
 import org.wit.hillfort.views.BaseView
 
-
 class HillfortView : BaseView(), AnkoLogger, ImageListener {
 
   lateinit var presenter: HillfortPresenter
+  lateinit var map: GoogleMap
 
-  //val sdf = SimpleDateFormat("dd/MMM/yyyy")
   var hillfort = HillfortModel()
-  //lateinit var app : MainApp
-  //val IMAGE_REQUEST = 1
-  //val LOCATION_REQUEST = 2
-  //var edit = false;
-  //var location = Location(52.245696, -7.139102, 15f)
-
 
   override fun onCreate(savedInstanceState: Bundle?) {
     super.onCreate(savedInstanceState)
     setContentView(R.layout.activity_hillfort)
-    //toolbarAdd.title = title
-    //setSupportActionBar(toolbarAdd)
     init(toolbarAdd)
-    //info("Hillfort Activity started..")
 
-    //presenter = HillfortPresenter(this)
+    mapView.onCreate(savedInstanceState);
+    mapView.getMapAsync {
+      map = it
+      presenter.doConfigureMap(map)
+    }
 
     presenter = initPresenter(HillfortPresenter(this)) as HillfortPresenter
 
-
-    //app = application as MainApp
-
     val layoutManager = LinearLayoutManager(this)
     recyclerView2.layoutManager = layoutManager
-
 
     /*
     if (intent.hasExtra("hillfort_edit")) {
@@ -122,9 +113,11 @@ class HillfortView : BaseView(), AnkoLogger, ImageListener {
 
     */
     chooseImage.setOnClickListener{
+      presenter.cacheHillfort(hillfortTitle.text.toString(), description.text.toString())
       presenter.doSelectImage()
     }
     hillfortLocation.setOnClickListener{
+      presenter.cacheHillfort(hillfortTitle.text.toString(), description.text.toString())
       presenter.doSetLocation()
     }
 
@@ -178,7 +171,7 @@ class HillfortView : BaseView(), AnkoLogger, ImageListener {
 
   override fun onCreateOptionsMenu(menu: Menu): Boolean {
     menuInflater.inflate(R.menu.menu_hillfort, menu)
-    //if(presenter.edit) menu.getItem(1).setVisible(true)
+    if(presenter.edit) menu.getItem(1).setVisible(true)
     return super.onCreateOptionsMenu(menu)
   }
 
@@ -241,4 +234,30 @@ class HillfortView : BaseView(), AnkoLogger, ImageListener {
   override fun onBackPressed() {
     presenter.doCancel()
   }
+
+  override fun onDestroy(){
+    super.onDestroy()
+    mapView.onDestroy()
+  }
+  override fun onLowMemory() {
+    super.onLowMemory()
+    mapView.onLowMemory()
+  }
+
+  override fun onPause() {
+    super.onPause()
+    mapView.onPause()
+  }
+
+  override fun onResume() {
+    super.onResume()
+    mapView.onResume()
+  }
+
+  override fun onSaveInstanceState(outState: Bundle) {
+    super.onSaveInstanceState(outState)
+    mapView.onSaveInstanceState(outState)
+  }
+
+
 }
