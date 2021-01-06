@@ -1,11 +1,8 @@
 package org.wit.hillfort.activities
 
 import android.os.Bundle
-import android.view.MenuItem
 import androidx.appcompat.app.AppCompatActivity
-import kotlinx.android.synthetic.main.activity_login.*
 import kotlinx.android.synthetic.main.activity_signup.*
-import kotlinx.android.synthetic.main.activity_welcome.*
 import org.jetbrains.anko.AnkoLogger
 import org.jetbrains.anko.info
 import org.jetbrains.anko.startActivityForResult
@@ -39,7 +36,7 @@ class SignUpActivity : AppCompatActivity(), AnkoLogger {
                 tempUser.password=password
                 app.currentUser = app.users.signup(tempUser)
                 setResult(AppCompatActivity.RESULT_OK)
-                startActivityForResult<HillfortListActivity>(0)
+                startActivityForResult<HillfortListView>(0)
             }
         }
     }

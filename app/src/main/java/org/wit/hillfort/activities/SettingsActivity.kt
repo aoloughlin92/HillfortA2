@@ -60,7 +60,7 @@ class SettingsActivity : AppCompatActivity(), AnkoLogger {
                 info("Hillfort User Updated with email: $email and password: $password")
                 app.users.update(user)
                 setResult(AppCompatActivity.RESULT_OK)
-                startActivityForResult<HillfortListActivity>(0)
+                startActivityForResult<HillfortListView>(0)
             }
         }
 

@@ -3,7 +3,6 @@ package org.wit.hillfort.activities
 import android.content.Intent
 import kotlinx.android.synthetic.main.activity_hillfort.*
 import org.jetbrains.anko.intentFor
-import org.wit.hillfort.helpers.readImage
 import org.wit.hillfort.helpers.showImagePicker
 import org.wit.hillfort.main.MainApp
 import org.wit.hillfort.models.Location

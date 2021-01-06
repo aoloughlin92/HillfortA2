@@ -32,7 +32,7 @@ class LoginActivity : AppCompatActivity(), AnkoLogger {
                     info("Hillfort Log in with email: $email and password: $password")
                     app.currentUser = user
                     setResult(AppCompatActivity.RESULT_OK)
-                    startActivityForResult<HillfortListActivity>(0)
+                    startActivityForResult<HillfortListView>(0)
                 }
                 else {
                     toast (R.string.login_failed)
