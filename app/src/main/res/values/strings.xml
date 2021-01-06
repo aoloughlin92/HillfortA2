@@ -16,6 +16,7 @@
     <string name="button_addImage"> Add Image </string>
     <string name="button_location">Set Location</string>
     <string name="title_activity_map">Map</string>
+    <string name="title_activity_hillfort_maps">Map</string>
     <string name="splash_message">Hillforts</string>
     <string name="button_chooseSignUp">Sign Up</string>
     <string name="button_chooseLogin">Log In</string>
@@ -35,4 +36,8 @@
     <string name="button_update">Update</string>
     <string name="update_failed">Email is already registered.</string>
     <string name="menu_up">Up</string>
+
+    <string name="hillfortPicture">Placemark Image</string>
+    <string name="hillfortTitle">Placemark Title</string>
+    <string name="hillfortDescription">Placemark Description</string>
 </resources>

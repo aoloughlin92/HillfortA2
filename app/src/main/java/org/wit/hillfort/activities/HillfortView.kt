@@ -24,16 +24,19 @@ import java.text.SimpleDateFormat
 import java.util.*
 
 
-class HillfortActivity : AppCompatActivity(), AnkoLogger, ImageListener {
+class HillfortView : AppCompatActivity(), AnkoLogger, ImageListener {
 
-  val sdf = SimpleDateFormat("dd/MMM/yyyy")
+  lateinit var presenter: HillfortPresenter
+
+  //val sdf = SimpleDateFormat("dd/MMM/yyyy")
   var hillfort = HillfortModel()
-  lateinit var app : MainApp
-  val IMAGE_REQUEST = 1
-  val LOCATION_REQUEST = 2
+  //lateinit var app : MainApp
+  //val IMAGE_REQUEST = 1
+  //val LOCATION_REQUEST = 2
+  //var edit = false;
   //var location = Location(52.245696, -7.139102, 15f)
 
-  @SuppressLint("ResourceAsColor")
+
   override fun onCreate(savedInstanceState: Bundle?) {
     super.onCreate(savedInstanceState)
     setContentView(R.layout.activity_hillfort)
@@ -41,16 +44,15 @@ class HillfortActivity : AppCompatActivity(), AnkoLogger, ImageListener {
     setSupportActionBar(toolbarAdd)
     info("Hillfort Activity started..")
 
-    app = application as MainApp
+    presenter = HillfortPresenter(this)
+
+    //app = application as MainApp
 
     val layoutManager = LinearLayoutManager(this)
     recyclerView2.layoutManager = layoutManager
 
 
-    var edit = false
-
-
-
+    /*
     if (intent.hasExtra("hillfort_edit")) {
       edit = true
       hillfort = intent.extras?.getParcelable<HillfortModel>("hillfort_edit")!!
@@ -74,9 +76,13 @@ class HillfortActivity : AppCompatActivity(), AnkoLogger, ImageListener {
       btnAdd.setText(R.string.save_hillfort)
     }
 
+     */
+
 
     checkBox.setOnCheckedChangeListener ({ buttonView, isChecked ->
+      /*
       if(isChecked) {
+
         hillfort.visited = true
         hillfort.date = sdf.format(Date())
         visitDate.setText("Date Visited: ${hillfort.date}")
@@ -86,15 +92,21 @@ class HillfortActivity : AppCompatActivity(), AnkoLogger, ImageListener {
         hillfort.date = ""
         visitDate.setText("")
       }
+    */
+      presenter.doCheckVisited(isChecked)
     })
 
     btnAdd.setOnClickListener() {
-      hillfort.title = hillfortTitle.text.toString()
-      hillfort.description = description.text.toString()
-      hillfort.notes = notes.text.toString()
-      if (hillfort.title.isEmpty()) {
+
+      var title = hillfortTitle.text.toString()
+      var description = description.text.toString()
+      var notes = notes.text.toString()
+
+      if (title.isEmpty()) {
         toast (R.string.enter_hillfort_title)
       }else{
+        presenter.doAddOrSave(title, description, notes)
+        /*
         if(edit) {
           app.hillforts.update(hillfort.copy())
         }else{
@@ -103,11 +115,25 @@ class HillfortActivity : AppCompatActivity(), AnkoLogger, ImageListener {
         info("add Button Pressed: $hillfortTitle")
         setResult(AppCompatActivity.RESULT_OK)
         finish()
+
+         */
       }
     }
+
+    /*
     chooseImage.setOnClickListener {
       showImagePicker(this, IMAGE_REQUEST)
     }
+
+    */
+    chooseImage.setOnClickListener{
+      presenter.doSelectImage()
+    }
+    hillfortLocation.setOnClickListener{
+      presenter.doSetLocation()
+    }
+
+    /*
     hillfortLocation.setOnClickListener {
       val location = Location(52.245696, -7.139102, 15f)
       if (hillfort.zoom != 0f) {
@@ -118,7 +144,31 @@ class HillfortActivity : AppCompatActivity(), AnkoLogger, ImageListener {
       startActivityForResult(intentFor<MapActivity>().putExtra("location", location), LOCATION_REQUEST)
     }
 
+     */
 
+
+  }
+
+  @SuppressLint("ResourceAsColor")
+  fun showHillfort(hillfort: HillfortModel){
+
+    hillfortTitle.setText(hillfort.title)
+    description.setText(hillfort.description)
+    notes.setText(hillfort.notes)
+    checkBox.setChecked(hillfort.visited)
+    if(hillfort.visited ==true){
+      visitDate.setText("Date Visited: ${hillfort.date}")
+    }
+    showImages(hillfort.images)
+
+    if (hillfort.images.size < 4) {
+      chooseImage.setText(R.string.change_hillfort_image)
+    }
+    if(hillfort.images.size >3){
+      chooseImage.setEnabled(false)
+      chooseImage.setBackgroundColor(R.color.colorInactive)
+    }
+    btnAdd.setText(R.string.save_hillfort)
   }
 
   override fun onDeleteClick(image: String) {
@@ -133,19 +183,21 @@ class HillfortActivity : AppCompatActivity(), AnkoLogger, ImageListener {
 
   override fun onCreateOptionsMenu(menu: Menu): Boolean {
     menuInflater.inflate(R.menu.menu_hillfort, menu)
+    if(presenter.edit) menu.getItem(1).setVisible(true)
     return super.onCreateOptionsMenu(menu)
   }
+
+
   override fun onOptionsItemSelected(item: MenuItem): Boolean {
     when (item?.itemId) {
       R.id.item_cancel -> {
-        finish()
+        presenter.doCancel()
       }
       R.id.item_delete ->{
-        app.hillforts.delete(hillfort)
-        finish()
+        presenter.doDelete()
       }
       R.id.item_up ->{
-        finish()
+        presenter.doCancel()
       }
     }
     return super.onOptionsItemSelected(item)
@@ -153,12 +205,16 @@ class HillfortActivity : AppCompatActivity(), AnkoLogger, ImageListener {
 
   override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
     super.onActivityResult(requestCode, resultCode, data)
-    when (requestCode) {
+    if(data != null){
+      presenter.doActivityResult(requestCode, resultCode, data)
+    }
+    /*when (requestCode) {
       IMAGE_REQUEST -> {
         if (data != null) {
           hillfort.images.add(data.getData().toString())
-          showImages(hillfort.images)
-          chooseImage.setText(R.string.change_hillfort_image)
+          hillfortImage.setImageBitmap(readImage(this, resultCode, data))
+          //showImages(hillfort.images)
+          //chooseImage.setText(R.string.change_hillfort_image)
         }
       }
       LOCATION_REQUEST -> {
@@ -169,6 +225,6 @@ class HillfortActivity : AppCompatActivity(), AnkoLogger, ImageListener {
           hillfort.zoom = location.zoom
         }
       }
-    }
+    }*/
   }
 }
