@@ -1,13 +1,14 @@
-package org.wit.hillfort.activities
+package org.wit.hillfort.views.hillfortlist
 
-import android.content.Intent
-import androidx.core.content.ContextCompat.startActivity
 import org.jetbrains.anko.intentFor
 import org.jetbrains.anko.startActivity
 import org.jetbrains.anko.startActivityForResult
+import org.wit.hillfort.activities.HillfortMapsActivity
+import org.wit.hillfort.activities.SettingsActivity
 import org.wit.hillfort.main.MainApp
 import org.wit.hillfort.models.HillfortModel
 import org.wit.hillfort.models.UserModel
+import org.wit.hillfort.views.hillfort.HillfortView
 
 class HillfortListPresenter(val view: HillfortListView) {
 

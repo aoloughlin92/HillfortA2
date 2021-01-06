@@ -1,4 +1,4 @@
-package org.wit.hillfort.activities
+package org.wit.hillfort.views.hillfortlist
 
 import android.content.Intent
 import android.os.Bundle
@@ -7,11 +7,10 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import kotlinx.android.synthetic.main.activity_hillfort_list.*
 import org.jetbrains.anko.intentFor
-import org.jetbrains.anko.startActivity
-import org.jetbrains.anko.startActivityForResult
 import org.wit.hillfort.R
+import org.wit.hillfort.activities.WelcomeActivity
 import org.wit.hillfort.models.HillfortModel
-import org.wit.hillfort.models.UserModel
+import org.wit.hillfort.views.hillfort.HillfortView
 
 
 class HillfortListView : AppCompatActivity(), HillfortListener {
