@@ -1,6 +1,9 @@
 package org.wit.hillfort.views.hillfort
 
+import android.annotation.SuppressLint
 import android.content.Intent
+import com.google.android.gms.location.FusedLocationProviderClient
+import com.google.android.gms.location.LocationServices
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.model.LatLng
@@ -9,6 +12,8 @@ import kotlinx.android.synthetic.main.activity_hillfort.*
 import org.jetbrains.anko.AnkoLogger
 import org.jetbrains.anko.info
 import org.jetbrains.anko.intentFor
+import org.wit.hillfort.helpers.checkLocationPermissions
+import org.wit.hillfort.helpers.isPermissionGranted
 import org.wit.hillfort.helpers.showImagePicker
 import org.wit.hillfort.main.MainApp
 import org.wit.hillfort.models.Location
@@ -31,12 +36,27 @@ class HillfortPresenter(view: BaseView): BasePresenter(view) , AnkoLogger {
 
     var map: GoogleMap? = null
 
+    var locationService: FusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(view)
+
     init {
         //app = view.application as MainApp
         if (view.intent.hasExtra("hillfort_edit")) {
             edit = true
             hillfort = view.intent.extras?.getParcelable<HillfortModel>("hillfort_edit")!!
             view.showHillfort(hillfort)
+        }else {
+            if (checkLocationPermissions(view)) {
+                doSetCurrentLocation()
+            }
+        }
+    }
+
+    override fun doRequestPermissionsResult(requestCode: Int, permissions: Array<String>, grantResults: IntArray) {
+        if (isPermissionGranted(requestCode, grantResults)) {
+            doSetCurrentLocation()
+        } else {
+            // permissions denied, so use the default location
+            locationUpdate(defaultLocation.lat, defaultLocation.lng)
         }
     }
 
@@ -85,6 +105,10 @@ class HillfortPresenter(view: BaseView): BasePresenter(view) , AnkoLogger {
 
 
     fun doSetLocation() {
+
+        view?.navigateTo(VIEW.LOCATION, LOCATION_REQUEST, "location", Location(hillfort.lat, hillfort.lng, hillfort.zoom))
+
+        /*
         if (edit == false) {
             view?.navigateTo(VIEW.LOCATION, LOCATION_REQUEST, "location", defaultLocation)
         }
@@ -95,7 +119,7 @@ class HillfortPresenter(view: BaseView): BasePresenter(view) , AnkoLogger {
                 "location",
                 Location(hillfort.lat, hillfort.lng, hillfort.zoom)
             )
-        }
+        }*/
 
         /*if (hillfort.zoom != 0f) {
             defaultLocation.lat = hillfort.lat
@@ -127,6 +151,7 @@ class HillfortPresenter(view: BaseView): BasePresenter(view) , AnkoLogger {
                 hillfort.lat = defaultLocation.lat
                 hillfort.lng = defaultLocation.lng
                 hillfort.zoom = defaultLocation.zoom
+                locationUpdate(hillfort.lat, hillfort.lng)
             }
         }
     }
@@ -148,5 +173,12 @@ class HillfortPresenter(view: BaseView): BasePresenter(view) , AnkoLogger {
         map?.addMarker(options)
         map?.moveCamera(CameraUpdateFactory.newLatLngZoom(LatLng(hillfort.lat, hillfort.lng), hillfort.zoom))
         view?.showHillfort(hillfort)
+    }
+
+    @SuppressLint("MissingPermission")
+    fun doSetCurrentLocation() {
+        locationService.lastLocation.addOnSuccessListener {
+            locationUpdate(it.latitude, it.longitude)
+        }
     }
 }
