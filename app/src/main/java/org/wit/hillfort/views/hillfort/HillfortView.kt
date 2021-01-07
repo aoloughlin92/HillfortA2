@@ -140,10 +140,18 @@ class HillfortView : BaseView(), AnkoLogger, ImageListener {
 
   @SuppressLint("ResourceAsColor")
   override fun showHillfort(hillfort: HillfortModel){
-
-    hillfortTitle.setText(hillfort.title)
-    description.setText(hillfort.description)
-    notes.setText(hillfort.notes)
+    if(hillfortTitle.text.isEmpty()) {
+      hillfortTitle.setText(hillfort.title)
+    }
+    if(description.text.isEmpty()){
+      description.setText(hillfort.description)
+    }
+    if(notes.text.isEmpty()){
+        notes.setText(hillfort.notes)
+      }
+    //hillfortTitle.setText(hillfort.title)
+    //description.setText(hillfort.description)
+    //notes.setText(hillfort.notes)
     checkBox.setChecked(hillfort.visited)
     if(hillfort.visited ==true){
       visitDate.setText("Date Visited: ${hillfort.date}")
