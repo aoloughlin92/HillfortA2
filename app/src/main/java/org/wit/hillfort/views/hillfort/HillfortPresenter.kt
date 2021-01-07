@@ -3,6 +3,8 @@ package org.wit.hillfort.views.hillfort
 import android.annotation.SuppressLint
 import android.content.Intent
 import com.google.android.gms.location.FusedLocationProviderClient
+import com.google.android.gms.location.LocationCallback
+import com.google.android.gms.location.LocationResult
 import com.google.android.gms.location.LocationServices
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
@@ -13,6 +15,7 @@ import org.jetbrains.anko.AnkoLogger
 import org.jetbrains.anko.info
 import org.jetbrains.anko.intentFor
 import org.wit.hillfort.helpers.checkLocationPermissions
+import org.wit.hillfort.helpers.createDefaultLocationRequest
 import org.wit.hillfort.helpers.isPermissionGranted
 import org.wit.hillfort.helpers.showImagePicker
 import org.wit.hillfort.main.MainApp
@@ -35,6 +38,8 @@ class HillfortPresenter(view: BaseView): BasePresenter(view) , AnkoLogger {
     var edit = false;
 
     var map: GoogleMap? = null
+
+    val locationRequest = createDefaultLocationRequest()
 
     var locationService: FusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(view)
 
@@ -179,6 +184,21 @@ class HillfortPresenter(view: BaseView): BasePresenter(view) , AnkoLogger {
     fun doSetCurrentLocation() {
         locationService.lastLocation.addOnSuccessListener {
             locationUpdate(it.latitude, it.longitude)
+        }
+    }
+
+    @SuppressLint("MissingPermission")
+    fun doResartLocationUpdates() {
+        var locationCallback = object : LocationCallback() {
+            override fun onLocationResult(locationResult: LocationResult?) {
+                if (locationResult != null && locationResult.locations != null) {
+                    val l = locationResult.locations.last()
+                    locationUpdate(l.latitude, l.longitude)
+                }
+            }
+        }
+        if (!edit) {
+            locationService.requestLocationUpdates(locationRequest, locationCallback, null)
         }
     }
 }

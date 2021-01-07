@@ -31,6 +31,7 @@ class HillfortView : BaseView(), AnkoLogger, ImageListener {
     mapView.getMapAsync {
       map = it
       presenter.doConfigureMap(map)
+      it.setOnMapClickListener { presenter.doSetLocation() }
     }
 
     presenter = initPresenter(HillfortPresenter(this)) as HillfortPresenter
@@ -116,10 +117,10 @@ class HillfortView : BaseView(), AnkoLogger, ImageListener {
       presenter.cacheHillfort(hillfortTitle.text.toString(), description.text.toString())
       presenter.doSelectImage()
     }
-    hillfortLocation.setOnClickListener{
+    /*hillfortLocation.setOnClickListener{
       presenter.cacheHillfort(hillfortTitle.text.toString(), description.text.toString())
       presenter.doSetLocation()
-    }
+    }*/
 
     /*
     hillfortLocation.setOnClickListener {
@@ -156,6 +157,8 @@ class HillfortView : BaseView(), AnkoLogger, ImageListener {
       chooseImage.setEnabled(false)
       chooseImage.setBackgroundColor(R.color.colorInactive)
     }
+    lat.setText("%.6f".format(hillfort.lat))
+    lng.setText("%.6f".format(hillfort.lng))
     //btnAdd.setText(R.string.save_hillfort)
   }
 
@@ -171,7 +174,7 @@ class HillfortView : BaseView(), AnkoLogger, ImageListener {
 
   override fun onCreateOptionsMenu(menu: Menu): Boolean {
     menuInflater.inflate(R.menu.menu_hillfort, menu)
-    if(presenter.edit) menu.getItem(1).setVisible(true)
+    if(presenter.edit) menu.getItem(2).setVisible(true)
     return super.onCreateOptionsMenu(menu)
   }
 
@@ -188,9 +191,9 @@ class HillfortView : BaseView(), AnkoLogger, ImageListener {
       R.id.item_delete ->{
         presenter.doDelete()
       }
-      R.id.item_up ->{
+      /*R.id.item_up ->{
         presenter.doCancel()
-      }
+      }*/
       R.id.item_save -> {
         if (hillfortTitle.text.toString().isEmpty()) {
           toast(R.string.enter_hillfort_title)
@@ -252,6 +255,7 @@ class HillfortView : BaseView(), AnkoLogger, ImageListener {
   override fun onResume() {
     super.onResume()
     mapView.onResume()
+    presenter.doResartLocationUpdates()
   }
 
   override fun onSaveInstanceState(outState: Bundle) {
