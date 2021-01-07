@@ -77,9 +77,6 @@ class SettingsActivity : AppCompatActivity(), AnkoLogger {
                 intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
                 startActivity(intent);
             }
-            R.id.item_up ->{
-                finish()
-            }
         }
         return super.onOptionsItemSelected(item)
     }

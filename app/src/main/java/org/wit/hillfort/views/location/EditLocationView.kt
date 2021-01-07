@@ -21,42 +21,25 @@ import org.wit.hillfort.views.BaseView
 
 class EditLocationView : BaseView(), GoogleMap.OnMarkerDragListener, GoogleMap.OnMarkerClickListener {
 
-    //lateinit var map: GoogleMap
     lateinit var presenter: EditLocationPresenter
-    //var location = Location()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_map)
-        super.init(toolbar)
-        //location = intent.extras?.getParcelable<Location>("location")!!
-        // Obtain the SupportMapFragment and get notified when the map is ready to be used.
+        super.init(toolbar, true)
 
         presenter = initPresenter(EditLocationPresenter(this)) as EditLocationPresenter
 
-        /*
-        val mapFragment = supportFragmentManager
-            .findFragmentById(R.id.map) as SupportMapFragment
-
-
-        presenter = EditLocationPresenter(this)
-
-         */
         mapView.onCreate(savedInstanceState);
         mapView.getMapAsync {
             it.setOnMarkerDragListener(this)
             it.setOnMarkerClickListener(this)
             presenter.doConfigureMap(it)
         }
-        /*
-        mapFragment.getMapAsync{
-            map = it
-            map.setOnMarkerDragListener(this)
-            map.setOnMarkerClickListener(this)
-            presenter.doConfigureMap(map)
-        }
-
-         */
+    }
+    override fun showLocation(latitude : Double, longitude : Double) {
+        lat.setText("%.6f".format(latitude))
+        lng.setText("%.6f".format(longitude))
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
@@ -73,27 +56,7 @@ class EditLocationView : BaseView(), GoogleMap.OnMarkerDragListener, GoogleMap.O
         return super.onOptionsItemSelected(item)
     }
 
-    /*override fun onMapReady(googleMap: GoogleMap) {
-        map = googleMap
-        val loc = LatLng(location.lat, location.lng)
-        val options = MarkerOptions()
-            .title("Hillfort")
-            .snippet("GPS : " + loc.toString())
-            .draggable(true)
-            .position(loc)
-        map.addMarker(options)
-        map.setOnMarkerDragListener(this)
-        map.setOnMarkerClickListener(this)
-        map.moveCamera(CameraUpdateFactory.newLatLngZoom(loc, location.zoom))
-    }*/
-
     override fun onMarkerClick(marker: Marker): Boolean {
-        /*
-        val loc = LatLng(location.lat, location.lng)
-        marker.setSnippet("GPS : " + loc.toString())
-        return false
-
-         */
         presenter.doUpdateMarker(marker)
         return false
     }
@@ -107,21 +70,10 @@ class EditLocationView : BaseView(), GoogleMap.OnMarkerDragListener, GoogleMap.O
     }
 
     override fun onMarkerDragEnd(marker: Marker) {
-        /*
-        location.lat = marker.position.latitude
-        location.lng = marker.position.longitude
-        location.zoom = map.cameraPosition.zoom
-
-         */
         presenter.doUpdateLocation(marker.position.latitude, marker.position.longitude)
     }
 
     override fun onBackPressed() {
-        /*val resultIntent = Intent()
-        resultIntent.putExtra("location", location)
-        setResult(Activity.RESULT_OK, resultIntent)
-        finish()
-        super.onBackPressed()*/
         presenter.doSave()
     }
 

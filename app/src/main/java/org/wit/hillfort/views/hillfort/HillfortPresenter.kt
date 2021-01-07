@@ -11,9 +11,7 @@ import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.MarkerOptions
 import kotlinx.android.synthetic.main.activity_hillfort.*
-import org.jetbrains.anko.AnkoLogger
-import org.jetbrains.anko.info
-import org.jetbrains.anko.intentFor
+import org.jetbrains.anko.*
 import org.wit.hillfort.helpers.checkLocationPermissions
 import org.wit.hillfort.helpers.createDefaultLocationRequest
 import org.wit.hillfort.helpers.isPermissionGranted
@@ -28,23 +26,15 @@ import java.util.*
 
 class HillfortPresenter(view: BaseView): BasePresenter(view) , AnkoLogger {
 
-    //val IMAGE_REQUEST = 1
-    //val LOCATION_REQUEST = 2
     val sdf = SimpleDateFormat("dd/MMM/yyyy")
-
     var hillfort = HillfortModel()
     var defaultLocation = Location(52.245696, -7.139102, 15f)
-    //var app: MainApp
     var edit = false;
-
     var map: GoogleMap? = null
-
     val locationRequest = createDefaultLocationRequest()
-
     var locationService: FusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(view)
 
     init {
-        //app = view.application as MainApp
         if (view.intent.hasExtra("hillfort_edit")) {
             edit = true
             hillfort = view.intent.extras?.getParcelable<HillfortModel>("hillfort_edit")!!
@@ -69,12 +59,16 @@ class HillfortPresenter(view: BaseView): BasePresenter(view) , AnkoLogger {
         hillfort.title = title
         hillfort.description = description
         hillfort.notes = notes
-        if (edit) {
-            app.hillforts.update(hillfort.copy())
-        } else {
-            app.hillforts.create(hillfort.copy())
+        doAsync{
+            if (edit) {
+                app.hillforts.update(hillfort)
+            } else {
+                app.hillforts.create(hillfort)
+            }
+            uiThread {
+                view?.finish()
+            }
         }
-        view?.finish()
     }
 
     fun doCancel() {
@@ -97,46 +91,17 @@ class HillfortPresenter(view: BaseView): BasePresenter(view) , AnkoLogger {
         if (isChecked) {
             hillfort.visited = true
             hillfort.date = sdf.format(Date())
-            //view?.visitDate?.setText("Date Visited: ${hillfort.date}" )
             res = "Date Visited: ${hillfort.date}"
         } else {
             hillfort.visited = false
             hillfort.date = ""
-            //view?.visitDate?.setText("")
         }
         view?.showVisitDate(res)
 
     }
 
-
     fun doSetLocation() {
-
         view?.navigateTo(VIEW.LOCATION, LOCATION_REQUEST, "location", Location(hillfort.lat, hillfort.lng, hillfort.zoom))
-
-        /*
-        if (edit == false) {
-            view?.navigateTo(VIEW.LOCATION, LOCATION_REQUEST, "location", defaultLocation)
-        }
-        else {
-            view?.navigateTo(
-                VIEW.LOCATION,
-                LOCATION_REQUEST,
-                "location",
-                Location(hillfort.lat, hillfort.lng, hillfort.zoom)
-            )
-        }*/
-
-        /*if (hillfort.zoom != 0f) {
-            defaultLocation.lat = hillfort.lat
-            defaultLocation.lng = hillfort.lng
-            defaultLocation.zoom = hillfort.zoom
-        }
-        view.startActivityForResult(
-            view.intentFor<EditLocationView>().putExtra("location", defaultLocation),
-            LOCATION_REQUEST
-        )
-
-         */
     }
 
     fun cacheHillfort (title: String, description: String) {
@@ -147,7 +112,6 @@ class HillfortPresenter(view: BaseView): BasePresenter(view) , AnkoLogger {
     override fun doActivityResult(requestCode: Int, resultCode: Int, data: Intent) {
         when (requestCode) {
             IMAGE_REQUEST -> {
-                //hillfort.images = data.data.toString()
                 hillfort.images.add(data.getData().toString())
                 view?.showHillfort(hillfort)
             }

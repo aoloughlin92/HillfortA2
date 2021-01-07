@@ -8,6 +8,7 @@ import android.os.Parcelable
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
 import org.jetbrains.anko.AnkoLogger
+import org.wit.hillfort.activities.SettingsActivity
 import org.wit.hillfort.activities.WelcomeActivity
 
 import org.wit.hillfort.models.HillfortModel
@@ -20,7 +21,7 @@ val IMAGE_REQUEST = 1
 val LOCATION_REQUEST = 2
 
 enum class VIEW {
-    LOCATION, HILLFORT, MAPS, LIST, WELCOME
+    LOCATION, HILLFORT, MAPS, LIST, WELCOME, SETTINGS
 }
 
 open abstract class BaseView() : AppCompatActivity(), AnkoLogger {
@@ -34,6 +35,7 @@ open abstract class BaseView() : AppCompatActivity(), AnkoLogger {
             VIEW.HILLFORT -> intent = Intent(this, HillfortView::class.java)
             VIEW.MAPS -> intent = Intent(this, HillfortMapView::class.java)
             VIEW.LIST -> intent = Intent(this, HillfortListView::class.java)
+            VIEW.SETTINGS -> intent = Intent(this, SettingsActivity::class.java)
             VIEW.WELCOME -> {
                 intent = Intent(this, WelcomeActivity::class.java)
                 intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
@@ -50,9 +52,10 @@ open abstract class BaseView() : AppCompatActivity(), AnkoLogger {
         return presenter
     }
 
-    fun init(toolbar: Toolbar) {
+    fun init(toolbar: Toolbar, upEnabled: Boolean) {
         toolbar.title = title
         setSupportActionBar(toolbar)
+        supportActionBar?.setDisplayHomeAsUpEnabled(upEnabled)
     }
 
     override fun onDestroy() {
@@ -77,5 +80,6 @@ open abstract class BaseView() : AppCompatActivity(), AnkoLogger {
     open fun showProgress() {}
     open fun hideProgress() {}
     open fun showVisitDate(res: String){}
+    open fun showLocation(latitude : Double, longitude : Double) {}
 
 }

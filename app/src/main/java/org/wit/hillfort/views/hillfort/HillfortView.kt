@@ -25,7 +25,7 @@ class HillfortView : BaseView(), AnkoLogger, ImageListener {
   override fun onCreate(savedInstanceState: Bundle?) {
     super.onCreate(savedInstanceState)
     setContentView(R.layout.activity_hillfort)
-    init(toolbarAdd)
+    init(toolbarAdd, true)
 
     mapView.onCreate(savedInstanceState);
     mapView.getMapAsync {
@@ -39,103 +39,14 @@ class HillfortView : BaseView(), AnkoLogger, ImageListener {
     val layoutManager = LinearLayoutManager(this)
     recyclerView2.layoutManager = layoutManager
 
-    /*
-    if (intent.hasExtra("hillfort_edit")) {
-      edit = true
-      hillfort = intent.extras?.getParcelable<HillfortModel>("hillfort_edit")!!
-      hillfortTitle.setText(hillfort.title)
-      description.setText(hillfort.description)
-      notes.setText(hillfort.notes)
-      checkBox.setChecked(hillfort.visited)
-      if(hillfort.visited ==true){
-        visitDate.setText("Date Visited: ${hillfort.date}")
-      }
-
-      showImages(hillfort.images)
-
-      if (hillfort.images.size < 4) {
-        chooseImage.setText(R.string.change_hillfort_image)
-      }
-      if(hillfort.images.size >3){
-        chooseImage.setEnabled(false)
-        chooseImage.setBackgroundColor(R.color.colorInactive)
-      }
-      btnAdd.setText(R.string.save_hillfort)
-    }
-
-     */
-
-
-    checkBox.setOnCheckedChangeListener ({ buttonView, isChecked ->
-      /*
-      if(isChecked) {
-
-        hillfort.visited = true
-        hillfort.date = sdf.format(Date())
-        visitDate.setText("Date Visited: ${hillfort.date}")
-      }
-      else{
-        hillfort.visited = false
-        hillfort.date = ""
-        visitDate.setText("")
-      }
-    */
+    checkBox.setOnCheckedChangeListener { buttonView, isChecked ->
       presenter.doCheckVisited(isChecked)
-    })
-   /*
-    btnAdd.setOnClickListener() {
-
-      var title = hillfortTitle.text.toString()
-      var description = description.text.toString()
-      var notes = notes.text.toString()
-
-      if (title.isEmpty()) {
-        toast (R.string.enter_hillfort_title)
-      }else{
-        presenter.doAddOrSave(title, description, notes)
-
-        if(edit) {
-          app.hillforts.update(hillfort.copy())
-        }else{
-          app.hillforts.create(hillfort.copy())
-        }
-        info("add Button Pressed: $hillfortTitle")
-        setResult(AppCompatActivity.RESULT_OK)
-        finish()
-
-
-      }
     }
 
-
-    chooseImage.setOnClickListener {
-      showImagePicker(this, IMAGE_REQUEST)
-    }
-
-    */
     chooseImage.setOnClickListener{
       presenter.cacheHillfort(hillfortTitle.text.toString(), description.text.toString())
       presenter.doSelectImage()
     }
-    /*hillfortLocation.setOnClickListener{
-      presenter.cacheHillfort(hillfortTitle.text.toString(), description.text.toString())
-      presenter.doSetLocation()
-    }*/
-
-    /*
-    hillfortLocation.setOnClickListener {
-      val location = Location(52.245696, -7.139102, 15f)
-      if (hillfort.zoom != 0f) {
-        location.lat =  hillfort.lat
-        location.lng = hillfort.lng
-        location.zoom = hillfort.zoom
-      }
-      startActivityForResult(intentFor<MapActivity>().putExtra("location", location), LOCATION_REQUEST)
-    }
-
-     */
-
-
   }
 
   @SuppressLint("ResourceAsColor")
@@ -149,9 +60,6 @@ class HillfortView : BaseView(), AnkoLogger, ImageListener {
     if(notes.text.isEmpty()){
         notes.setText(hillfort.notes)
       }
-    //hillfortTitle.setText(hillfort.title)
-    //description.setText(hillfort.description)
-    //notes.setText(hillfort.notes)
     checkBox.setChecked(hillfort.visited)
     if(hillfort.visited ==true){
       visitDate.setText("Date Visited: ${hillfort.date}")
@@ -167,7 +75,6 @@ class HillfortView : BaseView(), AnkoLogger, ImageListener {
     }
     lat.setText("%.6f".format(hillfort.lat))
     lng.setText("%.6f".format(hillfort.lng))
-    //btnAdd.setText(R.string.save_hillfort)
   }
 
   override fun onDeleteClick(image: String) {
@@ -182,14 +89,13 @@ class HillfortView : BaseView(), AnkoLogger, ImageListener {
 
   override fun onCreateOptionsMenu(menu: Menu): Boolean {
     menuInflater.inflate(R.menu.menu_hillfort, menu)
-    if(presenter.edit) menu.getItem(2).setVisible(true)
+    if(presenter.edit) menu.getItem(1).setVisible(true)
     return super.onCreateOptionsMenu(menu)
   }
 
   override fun showVisitDate(res: String){
     visitDate.setText(res)
   }
-
 
   override fun onOptionsItemSelected(item: MenuItem): Boolean {
     when (item?.itemId) {
@@ -199,9 +105,6 @@ class HillfortView : BaseView(), AnkoLogger, ImageListener {
       R.id.item_delete ->{
         presenter.doDelete()
       }
-      /*R.id.item_up ->{
-        presenter.doCancel()
-      }*/
       R.id.item_save -> {
         if (hillfortTitle.text.toString().isEmpty()) {
           toast(R.string.enter_hillfort_title)
@@ -222,24 +125,6 @@ class HillfortView : BaseView(), AnkoLogger, ImageListener {
     if(data != null){
       presenter.doActivityResult(requestCode, resultCode, data)
     }
-    /*when (requestCode) {
-      IMAGE_REQUEST -> {
-        if (data != null) {
-          hillfort.images.add(data.getData().toString())
-          hillfortImage.setImageBitmap(readImage(this, resultCode, data))
-          //showImages(hillfort.images)
-          //chooseImage.setText(R.string.change_hillfort_image)
-        }
-      }
-      LOCATION_REQUEST -> {
-        if (data != null) {
-          val location = data.extras?.getParcelable<Location>("location")!!
-          hillfort.lat = location.lat
-          hillfort.lng = location.lng
-          hillfort.zoom = location.zoom
-        }
-      }
-    }*/
   }
 
   override fun onBackPressed() {
@@ -270,6 +155,5 @@ class HillfortView : BaseView(), AnkoLogger, ImageListener {
     super.onSaveInstanceState(outState)
     mapView.onSaveInstanceState(outState)
   }
-
 
 }

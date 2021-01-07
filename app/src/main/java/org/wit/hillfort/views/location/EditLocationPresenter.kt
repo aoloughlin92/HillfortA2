@@ -28,23 +28,13 @@ class EditLocationPresenter(view: BaseView): BasePresenter(view) {
             .position(loc)
         map.addMarker(options)
         map.moveCamera(CameraUpdateFactory.newLatLngZoom(loc, location.zoom))
+        view?.showLocation(loc.latitude, loc.longitude);
     }
 
     fun doUpdateLocation(lat: Double, lng: Double) {
         location.lat = lat
         location.lng = lng
-        //location.zoom = zoom
     }
-
-    /*
-    fun doOnBackPressed() {
-        val resultIntent = Intent()
-        resultIntent.putExtra("location", location)
-        view.setResult(Activity.RESULT_OK, resultIntent)
-        view.finish()
-    }
-
-     */
 
     fun doSave(){
         val resultIntent = Intent()

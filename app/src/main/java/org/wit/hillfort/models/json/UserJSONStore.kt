@@ -1,4 +1,4 @@
-package org.wit.hillfort.models
+package org.wit.hillfort.models.json
 
 import android.content.Context
 import com.google.gson.Gson
@@ -9,6 +9,8 @@ import org.jetbrains.anko.info
 import org.wit.hillfort.helpers.exists
 import org.wit.hillfort.helpers.read
 import org.wit.hillfort.helpers.write
+import org.wit.hillfort.models.UserModel
+import org.wit.hillfort.models.UserStore
 import java.util.ArrayList
 
 val USER_JSON = "users.json"
@@ -34,11 +36,11 @@ class UserJSONStore : UserStore, AnkoLogger {
 
     override fun findByEmail(email: String): UserModel? {
         info("Finding User by email: $email")
-        var foundUser: UserModel? = users.find {p-> p.email == email}
+        var foundUser: UserModel? = users.find { p-> p.email == email}
         return foundUser
     }
 
-    override fun signup(user: UserModel):UserModel {
+    override fun signup(user: UserModel): UserModel {
         user.id = generateRandomId()
         users.add(user)
         serialize()
