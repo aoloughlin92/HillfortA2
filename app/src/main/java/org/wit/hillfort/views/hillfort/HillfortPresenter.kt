@@ -33,6 +33,7 @@ class HillfortPresenter(view: BaseView): BasePresenter(view) , AnkoLogger {
     var map: GoogleMap? = null
     val locationRequest = createDefaultLocationRequest()
     var locationService: FusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(view)
+    var locationManuallyChanged = false;
 
     init {
         if (view.intent.hasExtra("hillfort_edit")) {
@@ -101,6 +102,7 @@ class HillfortPresenter(view: BaseView): BasePresenter(view) , AnkoLogger {
     }
 
     fun doSetLocation() {
+        locationManuallyChanged = true;
         view?.navigateTo(VIEW.LOCATION, LOCATION_REQUEST, "location", Location(hillfort.location.lat, hillfort.location.lng, hillfort.location.zoom))
     }
 
@@ -153,7 +155,9 @@ class HillfortPresenter(view: BaseView): BasePresenter(view) , AnkoLogger {
             override fun onLocationResult(locationResult: LocationResult?) {
                 if (locationResult != null && locationResult.locations != null) {
                     val l = locationResult.locations.last()
-                    locationUpdate(Location(l.latitude, l.longitude))
+                    if (!locationManuallyChanged) {
+                        locationUpdate(Location(l.latitude, l.longitude))
+                    }
                 }
             }
         }

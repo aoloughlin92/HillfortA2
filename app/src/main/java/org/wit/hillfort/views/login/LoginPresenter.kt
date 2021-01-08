@@ -42,8 +42,10 @@ class LoginPresenter(view: BaseView) : BasePresenter(view) {
         view?.showProgress()
         auth.createUserWithEmailAndPassword(email, password).addOnCompleteListener(view!!) { task ->
             if (task.isSuccessful) {
-                view?.hideProgress()
-                view?.navigateTo(VIEW.LIST)
+                fireStore!!.fetchHillforts {
+                    view?.hideProgress()
+                    view?.navigateTo(VIEW.LIST)
+                }
             } else {
                 view?.hideProgress()
                 view?.toast("Sign Up Failed: ${task.exception?.message}")
