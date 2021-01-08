@@ -37,9 +37,9 @@ class EditLocationView : BaseView(), GoogleMap.OnMarkerDragListener, GoogleMap.O
             presenter.doConfigureMap(it)
         }
     }
-    override fun showLocation(latitude : Double, longitude : Double) {
-        lat.setText("%.6f".format(latitude))
-        lng.setText("%.6f".format(longitude))
+    override fun showLocation(location: Location) {
+        lat.setText("%.6f".format(location.lat))
+        lng.setText("%.6f".format(location.lng))
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {

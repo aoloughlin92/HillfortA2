@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/colorPrimary"
-    tools:context="org.wit.hillfort.activities.SettingsActivity">
+    tools:context="org.wit.hillfort.views.settings.SettingsView">
 
 
     <LinearLayout

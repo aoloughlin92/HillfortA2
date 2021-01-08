@@ -16,7 +16,7 @@
             android:name="com.google.android.geo.API_KEY"
             android:value="@string/google_maps_key" />
 
-        <activity android:name=".activities.SplashActivity">
+        <activity android:name=".views.splash.SplashView">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -24,10 +24,12 @@
             </intent-filter>
         </activity>
 
-        <activity android:name=".activities.WelcomeActivity" />
-        <activity android:name=".activities.SignUpActivity" />
-        <activity android:name=".activities.SettingsActivity" />
-        <activity android:name=".activities.LoginActivity" />
+
+
+        <activity android:name=".views.settings.SettingsView" />
+        <activity android:name=".views.login.LoginView"
+            android:label="@string/title_activity_login"
+            android:launchMode="singleTop"/>
 
         <activity
             android:name=".views.location.EditLocationView"

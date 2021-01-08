@@ -51,7 +51,7 @@ class HillfortPresenter(view: BaseView): BasePresenter(view) , AnkoLogger {
             doSetCurrentLocation()
         } else {
             // permissions denied, so use the default location
-            locationUpdate(defaultLocation.lat, defaultLocation.lng)
+            locationUpdate(defaultLocation)
         }
     }
 
@@ -101,7 +101,7 @@ class HillfortPresenter(view: BaseView): BasePresenter(view) , AnkoLogger {
     }
 
     fun doSetLocation() {
-        view?.navigateTo(VIEW.LOCATION, LOCATION_REQUEST, "location", Location(hillfort.lat, hillfort.lng, hillfort.zoom))
+        view?.navigateTo(VIEW.LOCATION, LOCATION_REQUEST, "location", Location(hillfort.location.lat, hillfort.location.lng, hillfort.location.zoom))
     }
 
     fun cacheHillfort (title: String, description: String) {
@@ -117,10 +117,8 @@ class HillfortPresenter(view: BaseView): BasePresenter(view) , AnkoLogger {
             }
             LOCATION_REQUEST -> {
                 val location = data.extras?.getParcelable<Location>("location")!!
-                hillfort.lat = defaultLocation.lat
-                hillfort.lng = defaultLocation.lng
-                hillfort.zoom = defaultLocation.zoom
-                locationUpdate(hillfort.lat, hillfort.lng)
+                hillfort.location = location
+                locationUpdate(hillfort.location)
             }
         }
     }
@@ -128,26 +126,24 @@ class HillfortPresenter(view: BaseView): BasePresenter(view) , AnkoLogger {
     fun doConfigureMap(m: GoogleMap) {
         info("Running HillfortPresenter doConfigureMap")
         map = m
-        locationUpdate(hillfort.lat, hillfort.lng)
+        locationUpdate(hillfort.location)
     }
 
-    fun locationUpdate(lat: Double, lng: Double) {
-        info("Running HillfortPresenter Location Update")
-        hillfort.lat = lat
-        hillfort.lng = lng
-        hillfort.zoom = 15f
+    fun locationUpdate(location: Location) {
+        hillfort.location = location
+        hillfort.location.zoom = 15f
         map?.clear()
         map?.uiSettings?.setZoomControlsEnabled(true)
-        val options = MarkerOptions().title(hillfort.title).position(LatLng(hillfort.lat, hillfort.lng))
+        val options = MarkerOptions().title(hillfort.title).position(LatLng(hillfort.location.lat, hillfort.location.lng))
         map?.addMarker(options)
-        map?.moveCamera(CameraUpdateFactory.newLatLngZoom(LatLng(hillfort.lat, hillfort.lng), hillfort.zoom))
+        map?.moveCamera(CameraUpdateFactory.newLatLngZoom(LatLng(hillfort.location.lat, hillfort.location.lng), hillfort.location.zoom))
         view?.showHillfort(hillfort)
     }
 
     @SuppressLint("MissingPermission")
     fun doSetCurrentLocation() {
         locationService.lastLocation.addOnSuccessListener {
-            locationUpdate(it.latitude, it.longitude)
+            locationUpdate(Location(it.latitude, it.longitude))
         }
     }
 
@@ -157,7 +153,7 @@ class HillfortPresenter(view: BaseView): BasePresenter(view) , AnkoLogger {
             override fun onLocationResult(locationResult: LocationResult?) {
                 if (locationResult != null && locationResult.locations != null) {
                     val l = locationResult.locations.last()
-                    locationUpdate(l.latitude, l.longitude)
+                    locationUpdate(Location(l.latitude, l.longitude))
                 }
             }
         }

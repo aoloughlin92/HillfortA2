@@ -13,6 +13,7 @@ import org.jetbrains.anko.AnkoLogger
 import org.jetbrains.anko.toast
 import org.wit.hillfort.R
 import org.wit.hillfort.models.HillfortModel
+import org.wit.hillfort.models.Location
 import org.wit.hillfort.views.BaseView
 
 class HillfortView : BaseView(), AnkoLogger, ImageListener {
@@ -73,9 +74,14 @@ class HillfortView : BaseView(), AnkoLogger, ImageListener {
       chooseImage.setEnabled(false)
       chooseImage.setBackgroundColor(R.color.colorInactive)
     }
-    lat.setText("%.6f".format(hillfort.lat))
-    lng.setText("%.6f".format(hillfort.lng))
+    this.showLocation(hillfort.location)
   }
+
+  override fun showLocation(loc: Location) {
+    lat.setText("%.6f".format(loc.lat))
+    lng.setText("%.6f".format(loc.lng))
+  }
+
 
   override fun onDeleteClick(image: String) {
     hillfort.images.remove(image)

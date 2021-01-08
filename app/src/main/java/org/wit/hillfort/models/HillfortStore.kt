@@ -7,5 +7,6 @@ interface HillfortStore {
     fun delete(hillfort: HillfortModel)
     fun countVisited(): Int
     fun findById(id:Long) : HillfortModel?
+    fun clear()
 
 }

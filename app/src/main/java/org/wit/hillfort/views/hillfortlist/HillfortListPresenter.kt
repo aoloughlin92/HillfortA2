@@ -1,10 +1,9 @@
 package org.wit.hillfort.views.hillfortlist
 
-import org.jetbrains.anko.*
+import com.google.firebase.auth.FirebaseAuth
 import org.jetbrains.anko.doAsync
 import org.jetbrains.anko.uiThread
 import org.wit.hillfort.models.HillfortModel
-import org.wit.hillfort.models.UserModel
 import org.wit.hillfort.views.BasePresenter
 import org.wit.hillfort.views.BaseView
 import org.wit.hillfort.views.VIEW
@@ -20,9 +19,10 @@ class HillfortListPresenter(view: BaseView): BasePresenter(view) {
         view?.navigateTo(VIEW.HILLFORT,0 ,"hillfort_edit", hillfort)
     }
 
-    fun doLogout(){
-        app.currentUser = UserModel()
-        view?.navigateTo(VIEW.WELCOME)
+    fun doLogout() {
+        FirebaseAuth.getInstance().signOut()
+        app.hillforts.clear()
+        view?.navigateTo(VIEW.LOGIN)
     }
 
     fun doSettings(){

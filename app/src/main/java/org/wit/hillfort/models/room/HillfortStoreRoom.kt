@@ -26,6 +26,9 @@ class HillfortStoreRoom(val context: Context) : HillfortStore {
         return dao.findById(id)
     }
 
+    override fun clear() {
+    }
+
     override fun create(hillfort: HillfortModel) {
         dao.create(hillfort)
     }

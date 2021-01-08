@@ -59,9 +59,7 @@ class HillfortJSONStore : HillfortStore, AnkoLogger {
             foundHillfort.title = hillfort.title
             foundHillfort.description = hillfort.description
             foundHillfort.images = hillfort.images
-            foundHillfort.lat = hillfort.lat
-            foundHillfort.lng = hillfort.lng
-            foundHillfort.zoom = hillfort.zoom
+            foundHillfort.location = hillfort.location
             foundHillfort.date = hillfort.date
             foundHillfort.visited = hillfort.visited
             foundHillfort.notes = hillfort.notes
@@ -70,11 +68,15 @@ class HillfortJSONStore : HillfortStore, AnkoLogger {
     }
 
 
+
     override fun findById(id:Long) : HillfortModel? {
         val foundHillfort: HillfortModel? = hillforts.find { it.id == id }
         return foundHillfort
     }
 
+    override fun clear() {
+        hillforts.clear()
+    }
 
     fun logAll() {
         hillforts.forEach{ info("${it}") }
