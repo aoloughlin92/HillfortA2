@@ -71,4 +71,8 @@ class SettingsPresenter(view: BaseView) : BasePresenter(view) {
         view?.navigateTo(VIEW.SETTINGS)
     }
 
+    fun doCancel() {
+        view?.finish()
+    }
+
 }

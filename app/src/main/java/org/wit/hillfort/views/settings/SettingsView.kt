@@ -4,6 +4,7 @@ import android.content.Intent
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
+import kotlinx.android.synthetic.main.activity_hillfort.*
 import kotlinx.android.synthetic.main.activity_hillfort_list.*
 import kotlinx.android.synthetic.main.activity_settings.*
 import kotlinx.android.synthetic.main.activity_settings.toolbar
@@ -19,22 +20,15 @@ import org.wit.hillfort.views.login.LoginView
 
 class SettingsView : BaseView(), AnkoLogger {
 
-
     lateinit var presenter: SettingsPresenter
-    //lateinit var app : MainApp
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_settings)
         super.init(toolbar, true)
         presenter = initPresenter(SettingsPresenter(this)) as SettingsPresenter
-        //app = application as MainApp
-        //val user = app.currentUser
-        //settingsEmail.setText(user.email)
-        //settingsPassword.setText(user.password)
+
         presenter.doShowStats()
-        //toolbar.title = title
-        //setSupportActionBar(toolbar)
 
         btnUpdate.setOnClickListener(){
             val email = settingsEmail.text.toString()
@@ -53,7 +47,6 @@ class SettingsView : BaseView(), AnkoLogger {
                 startActivityForResult<HillfortListView>(0)
             }*/
         }
-
     }
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item?.itemId) {
@@ -71,6 +64,10 @@ class SettingsView : BaseView(), AnkoLogger {
 
     override fun showStats (stats: String) {
         userStats.setText(stats)
+    }
+
+    override fun onBackPressed() {
+        presenter.doCancel()
     }
 
 

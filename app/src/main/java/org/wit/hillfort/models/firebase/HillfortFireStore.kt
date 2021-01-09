@@ -1,17 +1,24 @@
 package org.wit.hillfort.models.firebase
 
 import android.content.Context
+import android.graphics.Bitmap
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.*
+import com.google.firebase.storage.FirebaseStorage
+import com.google.firebase.storage.StorageReference
 import org.jetbrains.anko.AnkoLogger
+import org.wit.hillfort.helpers.readImageFromPath
 import org.wit.hillfort.models.HillfortModel
 import org.wit.hillfort.models.HillfortStore
+import java.io.ByteArrayOutputStream
+import java.io.File
 
 class HillfortFireStore(val context: Context) : HillfortStore, AnkoLogger {
 
     val hillforts = ArrayList<HillfortModel>()
     lateinit var userId: String
     lateinit var db: DatabaseReference
+    lateinit var st: StorageReference
 
     override fun findAll(): List<HillfortModel> {
         return hillforts
@@ -47,14 +54,21 @@ class HillfortFireStore(val context: Context) : HillfortStore, AnkoLogger {
             foundHillfort.title = hillfort.title
             foundHillfort.description = hillfort.description
             foundHillfort.images = hillfort.images
+            foundHillfort.rating = hillfort.rating
             foundHillfort.location = hillfort.location
             foundHillfort.notes = hillfort.notes
             foundHillfort.visited = hillfort.visited
             foundHillfort.date = hillfort.date
         }
 
-        db.child("users").child(userId).child("hillforts").child(hillfort.fbId).setValue(hillfort)
 
+
+        for(image in hillfort.images) {
+            if ((image.length) > 0 && (image[0] != 'h')) {
+                updateImage(hillfort, image)
+            }
+        }
+        db.child("users").child(userId).child("hillforts").child(hillfort.fbId).setValue(hillfort)
     }
 
     override fun delete(hillfort: HillfortModel) {
@@ -77,7 +91,34 @@ class HillfortFireStore(val context: Context) : HillfortStore, AnkoLogger {
         }
         userId = FirebaseAuth.getInstance().currentUser!!.uid
         db = FirebaseDatabase.getInstance().reference
+        st = FirebaseStorage.getInstance().reference
         hillforts.clear()
         db.child("users").child(userId).child("hillforts").addListenerForSingleValueEvent(valueEventListener)
+    }
+
+    fun updateImage(hillfort: HillfortModel, image:String) {
+        var index = hillfort.images.indexOf(image)
+        if (image != "") {
+            val fileName = File(image)
+            val imageName = fileName.getName()
+
+            var imageRef = st.child(userId + '/' + imageName)
+            val baos = ByteArrayOutputStream()
+            val bitmap = readImageFromPath(context, image)
+
+            bitmap?.let {
+                bitmap.compress(Bitmap.CompressFormat.JPEG, 100, baos)
+                val data = baos.toByteArray()
+                val uploadTask = imageRef.putBytes(data)
+                uploadTask.addOnFailureListener {
+                    println(it.message)
+                }.addOnSuccessListener { taskSnapshot ->
+                    taskSnapshot.metadata!!.reference!!.downloadUrl.addOnSuccessListener {
+                        hillfort.images[index] = it.toString()
+                        db.child("users").child(userId).child("hillforts").child(hillfort.fbId).setValue(hillfort)
+                    }
+                }
+            }
+        }
     }
 }

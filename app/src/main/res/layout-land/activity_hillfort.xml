@@ -35,6 +35,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_below="@id/appBarLayout"
+            android:layout_marginTop="5dp"
             android:fillViewport="true">
 
             <androidx.constraintlayout.widget.ConstraintLayout
@@ -43,8 +44,8 @@
 
                 <EditText
                     android:id="@+id/hillfortTitle"
-                    android:layout_width="219dp"
-                    android:layout_height="38dp"
+                    android:layout_width="522dp"
+                    android:layout_height="31dp"
                     android:layout_margin="8dp"
                     android:layout_marginStart="8dp"
                     android:layout_marginTop="12dp"
@@ -64,11 +65,12 @@
 
                 <EditText
                     android:id="@+id/description"
-                    android:layout_width="217dp"
-                    android:layout_height="68dp"
+                    android:layout_width="520dp"
+                    android:layout_height="49dp"
                     android:layout_margin="8dp"
                     android:layout_marginTop="8dp"
                     android:hint="@string/hint_hillfortDescription"
+                    android:importantForAutofill="no"
                     android:inputType="text"
                     android:maxLength="25"
                     android:maxLines="1"
@@ -76,16 +78,18 @@
                     android:textColor="@color/colorPrimaryDark"
                     android:textSize="14sp"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/hillfortTitle"
-                    android:importantForAutofill="no" />
+                    app:layout_constraintTop_toBottomOf="@+id/hillfortTitle" />
 
                 <TextView
                     android:id="@+id/locationHeading"
                     android:layout_width="106dp"
                     android:layout_height="22dp"
-                    android:layout_marginStart="28dp"
+                    android:layout_marginStart="32dp"
                     android:layout_marginTop="8dp"
+                    android:layout_marginEnd="8dp"
                     android:text="@string/location_heading"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="0.969"
                     app:layout_constraintStart_toEndOf="@+id/hillfortTitle"
                     app:layout_constraintTop_toTopOf="parent" />
 
@@ -93,11 +97,13 @@
                     android:id="@+id/lat"
                     android:layout_width="106dp"
                     android:layout_height="22dp"
+                    android:layout_marginStart="32dp"
                     android:layout_marginTop="8dp"
-                    android:layout_marginEnd="28dp"
+                    android:layout_marginEnd="8dp"
                     android:text="00.000000"
                     android:textAlignment="center"
                     app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="0.967"
                     app:layout_constraintStart_toEndOf="@+id/hillfortTitle"
                     app:layout_constraintTop_toBottomOf="@+id/locationHeading" />
 
@@ -105,12 +111,13 @@
                     android:id="@+id/lng"
                     android:layout_width="106dp"
                     android:layout_height="22dp"
+                    android:layout_marginStart="32dp"
                     android:layout_marginTop="8dp"
-                    android:layout_marginEnd="28dp"
+                    android:layout_marginEnd="8dp"
                     android:text="00.000000"
                     android:textAlignment="center"
                     app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintHorizontal_bias="0.519"
+                    app:layout_constraintHorizontal_bias="0.969"
                     app:layout_constraintStart_toEndOf="@+id/description"
                     app:layout_constraintTop_toBottomOf="@+id/lat" />
 
@@ -146,8 +153,8 @@
 
                 <TextView
                     android:id="@+id/visitDate"
-                    android:layout_width="123dp"
-                    android:layout_height="28dp"
+                    android:layout_width="300dp"
+                    android:layout_height="31dp"
                     android:layout_marginStart="8dp"
                     android:layout_marginTop="8dp"
                     android:layout_marginEnd="8dp"
@@ -165,6 +172,7 @@
                     android:layout_marginTop="24dp"
                     android:layout_marginEnd="8dp"
                     android:hint="@string/hint_hillfortNotes"
+                    android:importantForAutofill="no"
                     android:inputType="textMultiLine"
                     android:maxLength="300"
                     android:maxLines="5"
@@ -173,8 +181,7 @@
                     android:textSize="14sp"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/visitDate"
-                    android:importantForAutofill="no" />
+                    app:layout_constraintTop_toBottomOf="@+id/visitDate" />
 
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/recyclerView2"
@@ -192,8 +199,8 @@
 
                 <com.google.android.gms.maps.MapView
                     android:id="@+id/mapView"
-                    android:layout_width="339dp"
-                    android:layout_height="171dp"
+                    android:layout_width="648dp"
+                    android:layout_height="176dp"
                     android:layout_marginStart="8dp"
                     android:layout_marginTop="8dp"
                     android:layout_marginEnd="8dp"

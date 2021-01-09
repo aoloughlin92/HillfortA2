@@ -2,12 +2,15 @@ package org.wit.hillfort.views.login
 
 import android.os.Bundle
 import android.view.View
+import com.google.firebase.auth.FirebaseAuth
 import kotlinx.android.synthetic.main.activity_login.*
+import org.jetbrains.anko.AnkoLogger
+import org.jetbrains.anko.info
 import org.jetbrains.anko.toast
 import org.wit.hillfort.R
 import org.wit.hillfort.views.BaseView
 
-class LoginView : BaseView() {
+class LoginView : BaseView(), AnkoLogger {
 
     lateinit var presenter: LoginPresenter
 
@@ -19,6 +22,13 @@ class LoginView : BaseView() {
         presenter = initPresenter(LoginPresenter(this)) as LoginPresenter
 
         progressBar.visibility = View.GONE
+
+
+        //If user was preciously logged in, skip Login Page
+        val user = FirebaseAuth.getInstance().currentUser
+        if (user != null) {
+            presenter.doSkipLogin()
+        }
 
         signUp.setOnClickListener {
             val email = email.text.toString()

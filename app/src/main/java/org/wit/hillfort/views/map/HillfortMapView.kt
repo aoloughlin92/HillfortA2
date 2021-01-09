@@ -1,33 +1,29 @@
 package org.wit.hillfort.views.map
 
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import com.google.android.gms.maps.CameraUpdateFactory
+import androidx.appcompat.app.AppCompatActivity
+import com.bumptech.glide.Glide
 import com.google.android.gms.maps.GoogleMap
-import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.Marker
-import com.google.android.gms.maps.model.MarkerOptions
 import kotlinx.android.synthetic.main.activity_hillfort_maps.*
-import org.jetbrains.anko.info
 import org.wit.hillfort.R
 import org.wit.hillfort.helpers.readImageFromPath
-import org.wit.hillfort.main.MainApp
 import org.wit.hillfort.models.HillfortModel
 import org.wit.hillfort.views.BaseView
 
-class HillfortMapView : BaseView(), GoogleMap.OnMarkerClickListener  {
+class HillfortMapView : BaseView(), GoogleMap.OnMarkerClickListener {
 
     lateinit var presenter: HillfortMapPresenter
-    lateinit var map: GoogleMap
+    lateinit var map : GoogleMap
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_hillfort_maps)
-        super.init(toolbar, true)
+        super.init(toolbar, true);
 
         presenter = initPresenter (HillfortMapPresenter(this)) as HillfortMapPresenter
-        mapView.onCreate(savedInstanceState);
 
+        mapView.onCreate(savedInstanceState);
         mapView.getMapAsync {
             map = it
             map.setOnMarkerClickListener(this)
@@ -39,7 +35,8 @@ class HillfortMapView : BaseView(), GoogleMap.OnMarkerClickListener  {
         currentTitle.text = hillfort.title
         currentDescription.text = hillfort.description
         if(hillfort!!.images.size > 0) {
-            currentImage.setImageBitmap(readImageFromPath(this, hillfort!!.images.get(0)))
+            //currentImage.setImageBitmap(readImageFromPath(this, hillfort!!.images.get(0)))
+            Glide.with(this).load(hillfort!!.images.get(0)).into(currentImage);
         }
         else{
             currentImage.setImageBitmap(null)
@@ -48,6 +45,11 @@ class HillfortMapView : BaseView(), GoogleMap.OnMarkerClickListener  {
 
     override fun showHillforts(hillforts: List<HillfortModel>) {
         presenter.doPopulateMap(map, hillforts)
+    }
+
+    override fun onMarkerClick(marker: Marker): Boolean {
+        presenter.doMarkerSelected(marker)
+        return true
     }
 
     override fun onDestroy() {
@@ -74,10 +76,5 @@ class HillfortMapView : BaseView(), GoogleMap.OnMarkerClickListener  {
         super.onSaveInstanceState(outState)
         mapView.onSaveInstanceState(outState)
     }
-
-    override fun onMarkerClick(marker: Marker): Boolean {
-        presenter.doMarkerSelected(marker)
-        return true
-    }
-
 }
+

@@ -48,5 +48,7 @@
     <string name="title_activity_login"> Signup/Login to Hillfort</string>
     <string name="menu_showMap">Show Map</string>
     <string name="menu_logout">Logout</string>
+    <string name="email_address">Email Address</string>
+    <string name="password">Password</string>
 
 </resources>

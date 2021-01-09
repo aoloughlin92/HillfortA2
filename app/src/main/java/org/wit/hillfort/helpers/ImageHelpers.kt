@@ -9,8 +9,9 @@ import android.net.Uri
 import android.provider.MediaStore
 import org.wit.hillfort.R
 import java.io.IOException
+import org.jetbrains.anko.*
 
-fun showImagePicker(parent: Activity, id: Int) {
+fun showImagePicker(parent: Activity, id: Int)  {
     val intent = Intent()
     intent.type = "image/*"
     intent.action = Intent.ACTION_OPEN_DOCUMENT

@@ -4,6 +4,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
 import kotlinx.android.synthetic.main.card_hillfort.view.*
 import org.wit.hillfort.R
 import org.wit.hillfort.helpers.readImageFromPath
@@ -43,12 +44,16 @@ class HillfortAdapter constructor(
             itemView.description.text = hillfort.description
             if(hillfort.images.size>0) {
                 var imagestring = hillfort.images.first()
-                itemView.imageIcon.setImageBitmap(
+                /*itemView.imageIcon.setImageBitmap(
                     readImageFromPath(
                         itemView.context,
                         imagestring
                     )
                 )
+
+                 */
+                Glide.with(itemView.context).load(imagestring).into(itemView.imageIcon);
+
             }
             itemView.setOnClickListener { listener.onHillfortClick(hillfort) }
         }

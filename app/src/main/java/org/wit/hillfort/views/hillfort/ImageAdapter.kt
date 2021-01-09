@@ -4,6 +4,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
 import kotlinx.android.synthetic.main.card_images.view.*
 import org.wit.hillfort.R
 import org.wit.hillfort.helpers.readImageFromPath
@@ -40,12 +41,13 @@ class ImageAdapter constructor(
     class MainHolder constructor(itemView: View) : RecyclerView.ViewHolder(itemView) {
 
         fun bind(image: String, listener: ImageListener) {
-            itemView.hillfortMultipleImages.setImageBitmap(
+            /*itemView.hillfortMultipleImages.setImageBitmap(
                 readImageFromPath(
                     itemView.context,
                     image
                 )
-            )
+            )*/
+            Glide.with(itemView.context).load(image).into(itemView.hillfortMultipleImages);
             itemView.imagedeletebutton.setOnClickListener() {listener.onDeleteClick(image)}
         }
 

@@ -10,17 +10,14 @@ import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.MarkerOptions
-import kotlinx.android.synthetic.main.activity_hillfort.*
 import org.jetbrains.anko.*
 import org.wit.hillfort.helpers.checkLocationPermissions
 import org.wit.hillfort.helpers.createDefaultLocationRequest
 import org.wit.hillfort.helpers.isPermissionGranted
 import org.wit.hillfort.helpers.showImagePicker
-import org.wit.hillfort.main.MainApp
 import org.wit.hillfort.models.Location
 import org.wit.hillfort.models.HillfortModel
 import org.wit.hillfort.views.*
-import org.wit.hillfort.views.location.EditLocationView
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -87,6 +84,16 @@ class HillfortPresenter(view: BaseView): BasePresenter(view) , AnkoLogger {
         }
     }
 
+    fun loadImages(){
+        doAsync{
+            val images = hillfort.images
+            uiThread{
+                view?.showImages(images)
+            }
+        }
+    }
+
+
     fun doCheckVisited(isChecked: Boolean) {
         var res = "";
         if (isChecked) {
@@ -101,20 +108,28 @@ class HillfortPresenter(view: BaseView): BasePresenter(view) , AnkoLogger {
 
     }
 
+    fun doDeleteImage(image: String){
+        hillfort.images.remove(image)
+        loadImages()
+    }
+
     fun doSetLocation() {
         locationManuallyChanged = true;
         view?.navigateTo(VIEW.LOCATION, LOCATION_REQUEST, "location", Location(hillfort.location.lat, hillfort.location.lng, hillfort.location.zoom))
     }
 
-    fun cacheHillfort (title: String, description: String) {
+    fun cacheHillfort (title: String, description: String, notes: String) {
         hillfort.title = title;
-        hillfort.description = description
+        hillfort.description = description;
+        hillfort.notes = notes;
     }
 
     override fun doActivityResult(requestCode: Int, resultCode: Int, data: Intent) {
         when (requestCode) {
             IMAGE_REQUEST -> {
+                info("Image Request - Add Image")
                 hillfort.images.add(data.getData().toString())
+                info("Image Added")
                 view?.showHillfort(hillfort)
             }
             LOCATION_REQUEST -> {
@@ -148,6 +163,11 @@ class HillfortPresenter(view: BaseView): BasePresenter(view) , AnkoLogger {
             locationUpdate(Location(it.latitude, it.longitude))
         }
     }
+
+    fun doSetRating(rating: Float){
+        hillfort.rating = rating
+    }
+
 
     @SuppressLint("MissingPermission")
     fun doResartLocationUpdates() {

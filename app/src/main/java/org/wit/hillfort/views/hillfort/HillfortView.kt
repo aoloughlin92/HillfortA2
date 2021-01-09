@@ -10,11 +10,13 @@ import com.google.android.gms.maps.GoogleMap
 import kotlinx.android.synthetic.main.activity_hillfort.*
 import kotlinx.android.synthetic.main.activity_hillfort.recyclerView2
 import org.jetbrains.anko.AnkoLogger
+import org.jetbrains.anko.info
 import org.jetbrains.anko.toast
 import org.wit.hillfort.R
 import org.wit.hillfort.models.HillfortModel
 import org.wit.hillfort.models.Location
 import org.wit.hillfort.views.BaseView
+import kotlin.math.roundToInt
 
 class HillfortView : BaseView(), AnkoLogger, ImageListener {
 
@@ -26,7 +28,10 @@ class HillfortView : BaseView(), AnkoLogger, ImageListener {
   override fun onCreate(savedInstanceState: Bundle?) {
     super.onCreate(savedInstanceState)
     setContentView(R.layout.activity_hillfort)
-    init(toolbarAdd, true)
+
+
+    super.init(toolbarAdd, true)
+
 
     mapView.onCreate(savedInstanceState);
     mapView.getMapAsync {
@@ -37,6 +42,7 @@ class HillfortView : BaseView(), AnkoLogger, ImageListener {
 
     presenter = initPresenter(HillfortPresenter(this)) as HillfortPresenter
 
+
     val layoutManager = LinearLayoutManager(this)
     recyclerView2.layoutManager = layoutManager
 
@@ -45,8 +51,12 @@ class HillfortView : BaseView(), AnkoLogger, ImageListener {
     }
 
     chooseImage.setOnClickListener{
-      presenter.cacheHillfort(hillfortTitle.text.toString(), description.text.toString())
+      presenter.cacheHillfort(hillfortTitle.text.toString(), description.text.toString(), notes.text.toString())
       presenter.doSelectImage()
+    }
+
+    ratingBar.setOnRatingBarChangeListener { ratingBar, rating, fromUser ->
+      presenter.doSetRating(rating)
     }
   }
 
@@ -62,10 +72,15 @@ class HillfortView : BaseView(), AnkoLogger, ImageListener {
         notes.setText(hillfort.notes)
       }
     checkBox.setChecked(hillfort.visited)
+    if(hillfort.rating>0) {
+      ratingBar.setRating(hillfort.rating)
+    }
     if(hillfort.visited ==true){
       visitDate.setText("Date Visited: ${hillfort.date}")
     }
+
     showImages(hillfort.images)
+
 
     if (hillfort.images.size < 4) {
       chooseImage.setText(R.string.change_hillfort_image)
@@ -84,11 +99,11 @@ class HillfortView : BaseView(), AnkoLogger, ImageListener {
 
 
   override fun onDeleteClick(image: String) {
-    hillfort.images.remove(image)
-    showImages(hillfort.images)
+    presenter.doDeleteImage(image)
   }
 
-  fun showImages (images: List<String>) {
+  override fun showImages (images: ArrayList<String>) {
+    hillfort.images = images
     recyclerView2.adapter = ImageAdapter(images, this)
     recyclerView2.adapter?.notifyDataSetChanged()
   }

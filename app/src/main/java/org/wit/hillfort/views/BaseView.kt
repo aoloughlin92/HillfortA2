@@ -88,6 +88,6 @@ open abstract class BaseView() : AppCompatActivity(), AnkoLogger {
     open fun showProgress(){}
     open fun hideProgress(){}
     open fun showStats(stats: String){}
-
+    open fun showImages(images: ArrayList<String>){}
 
 }

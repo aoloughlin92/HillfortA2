@@ -89,8 +89,8 @@
 
         <com.google.android.gms.maps.MapView
             android:id="@+id/mapView"
-            android:layout_width="360dp"
-            android:layout_height="431dp"
+            android:layout_width="671dp"
+            android:layout_height="189dp"
             android:layout_marginStart="8dp"
             android:layout_marginTop="32dp"
             android:layout_marginEnd="8dp"
