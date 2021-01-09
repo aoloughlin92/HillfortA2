@@ -137,6 +137,9 @@ class HillfortView : BaseView(), AnkoLogger, ImageListener {
           )
         }
       }
+      R.id.item_share ->{
+        presenter.doShareHillfort()
+      }
     }
     return super.onOptionsItemSelected(item)
   }

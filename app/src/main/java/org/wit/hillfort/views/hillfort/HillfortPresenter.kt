@@ -2,6 +2,8 @@ package org.wit.hillfort.views.hillfort
 
 import android.annotation.SuppressLint
 import android.content.Intent
+import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.ContextCompat.startActivity
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationCallback
 import com.google.android.gms.location.LocationResult
@@ -21,7 +23,7 @@ import org.wit.hillfort.views.*
 import java.text.SimpleDateFormat
 import java.util.*
 
-class HillfortPresenter(view: BaseView): BasePresenter(view) , AnkoLogger {
+class HillfortPresenter(view: BaseView): BasePresenter(view), AnkoLogger {
 
     val sdf = SimpleDateFormat("dd/MMM/yyyy")
     var hillfort = HillfortModel()
@@ -73,7 +75,9 @@ class HillfortPresenter(view: BaseView): BasePresenter(view) , AnkoLogger {
         view?.finish()
     }
 
-
+    fun doShareHillfort(){
+        view?.doShareHillfort(hillfort)
+    }
 
     fun doDelete() {
         app.hillforts.delete(hillfort)

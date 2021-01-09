@@ -7,6 +7,7 @@ import android.content.Intent
 import android.os.Parcelable
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
+import androidx.core.content.ContextCompat
 import com.google.firebase.auth.FirebaseAuth
 import org.jetbrains.anko.AnkoLogger
 import org.wit.hillfort.views.settings.SettingsView
@@ -59,10 +60,12 @@ open abstract class BaseView() : AppCompatActivity(), AnkoLogger {
         toolbar.title = title
         setSupportActionBar(toolbar)
         supportActionBar?.setDisplayHomeAsUpEnabled(upEnabled)
-        val user = FirebaseAuth.getInstance().currentUser
+        /*val user = FirebaseAuth.getInstance().currentUser
         if (user != null) {
             toolbar.title = "${title}: ${user.email}"
         }
+
+         */
     }
 
     override fun onDestroy() {
@@ -70,6 +73,28 @@ open abstract class BaseView() : AppCompatActivity(), AnkoLogger {
         super.onDestroy()
     }
 
+    fun doShareHillfort(hillfort: HillfortModel){
+        val intent= Intent()
+        var locationURL = "https://www.google.ie/maps/@"+hillfort.location.lat+","+hillfort.location.lng+","+hillfort.location.zoom+"z"
+        intent.action=Intent.ACTION_SEND
+        if(hillfort.images.size>0) {
+            intent.putExtra(
+                Intent.EXTRA_TEXT, "Hillfort Title" + hillfort.title +
+                        "\nHillfort Description: " + hillfort.description +
+                        "\nHillfort Image: " + hillfort.images.get(0)+
+                        "\nHillfort Location: "+ locationURL
+            )
+        }
+        else{
+            intent.putExtra(
+                Intent.EXTRA_TEXT, "Hillfort Title" + hillfort.title +
+                        "\nHillfort Description: " + hillfort.description+
+                        "\nHillfort Location: "+ locationURL
+            )
+        }
+        intent.type="text/plain"
+        startActivity(Intent.createChooser(intent, "Share To:"))
+    }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
