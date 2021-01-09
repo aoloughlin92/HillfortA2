@@ -22,8 +22,16 @@ class HillfortStoreRoom(val context: Context) : HillfortStore {
         return dao.findAll()
     }
 
+    override fun setFavourite(hillfort: HillfortModel) {
+        dao.setFavourite(hillfort)
+    }
+
     override fun findByFbId(id: String): HillfortModel? {
         return dao.findById(id)
+    }
+
+    override fun findFavourites(): List<HillfortModel> {
+        return dao.findFavourites()
     }
 
     override fun clear() {

@@ -20,4 +20,10 @@ interface HillfortDao {
 
     @Delete
     fun deleteHillfort(hillfort: HillfortModel)
+
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    fun setFavourite(hillfort: HillfortModel)
+
+    @Query("select * from HillfortModel where favourite = 1")
+    fun findFavourites(): List<HillfortModel>
 }

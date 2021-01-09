@@ -66,6 +66,9 @@ class SettingsPresenter(view: BaseView) : BasePresenter(view) {
     fun doShowHillfortsMap() {
         view?.navigateTo(VIEW.MAPS)
     }
+    fun doShowFavourites(){
+        view?.navigateTo(VIEW.FAVOURITES)
+    }
 
     fun doSettings(){
         view?.navigateTo(VIEW.SETTINGS)

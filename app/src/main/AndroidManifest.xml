@@ -26,7 +26,8 @@
 
 
 
-        <activity android:name=".views.settings.SettingsView">
+        <activity android:name=".views.settings.SettingsView"
+            android:label="@string/title_activity_settings">
         <meta-data
             android:name="android.support.PARENT_ACTIVITY"
             android:value=".views.hillfortlist.HillfortListView" />
@@ -54,6 +55,14 @@
         <activity android:name=".views.hillfortlist.HillfortListView"
             android:label="@string/title_activity_hillfort_list"
             android:launchMode="singleTop"/>
+
+        <activity android:name=".views.favourites.FavouriteView"
+            android:label="@string/title_activity_favourite_view"
+            android:launchMode="singleTop">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".views.hillfortlist.HillfortListView" />
+        </activity>
 
         <activity
             android:name=".views.map.HillfortMapView"

@@ -1,4 +1,4 @@
-package org.wit.hillfort.views.hillfortlist
+package org.wit.hillfort.views.favourites
 
 import com.google.firebase.auth.FirebaseAuth
 import org.jetbrains.anko.AnkoLogger
@@ -11,7 +11,7 @@ import org.wit.hillfort.views.BaseView
 import org.wit.hillfort.views.VIEW
 
 
-class HillfortListPresenter(view: BaseView): BasePresenter(view), AnkoLogger {
+class FavouritePresenter(view: BaseView): BasePresenter(view), AnkoLogger {
 
     fun doAddHillfort() {
         view?.navigateTo(VIEW.HILLFORT)
@@ -22,16 +22,13 @@ class HillfortListPresenter(view: BaseView): BasePresenter(view), AnkoLogger {
         if(hillfort != null) {
             app.hillforts.delete(hillfort)
         }
-        loadHillforts()
-    }
-
-    fun doShowFavourites(){
-        view?.navigateTo(VIEW.FAVOURITES)
+        loadFavourites()
     }
 
     fun doFavourite(hillfort: HillfortModel, favourite: Boolean){
         hillfort.favourite = favourite
         app.hillforts.setFavourite(hillfort)
+        loadFavourites()
     }
 
     fun doEditHillfort(hillfort: HillfortModel) {
@@ -44,6 +41,10 @@ class HillfortListPresenter(view: BaseView): BasePresenter(view), AnkoLogger {
         view?.navigateTo(VIEW.LOGIN)
     }
 
+    fun doCancel(){
+        view?.finish()
+    }
+
     fun doSettings(){
         view?.navigateTo(VIEW.SETTINGS)
     }
@@ -52,9 +53,10 @@ class HillfortListPresenter(view: BaseView): BasePresenter(view), AnkoLogger {
         view?.navigateTo(VIEW.MAPS)
     }
 
-    fun loadHillforts(){
+    fun loadFavourites(){
         doAsync{
-            val hillforts = app.hillforts.findAll()
+
+            val hillforts = app.hillforts.findFavourites()
             uiThread{
                 view?.showHillforts(hillforts)
             }

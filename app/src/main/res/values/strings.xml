@@ -47,11 +47,14 @@
     <string name="title_activity_location">Hillfort</string>
     <string name="title_activity_login"> Signup/Login to Hillfort</string>
     <string name="menu_showMap">Show Map</string>
+    <string name="menu_showFavourites">Favourites</string>
     <string name="menu_logout">Logout</string>
     <string name="email_address">Email Address</string>
     <string name="password">Password</string>
     <string name="latvalue">00.000000</string>
     <string name="lngvalue">00.000000</string>
     <string name="favouritebutton">favouritebutton</string>
+    <string name="title_activity_favourite_view">Favourites</string>
+    <string name="title_activity_settings">Settings</string>
 
 </resources>

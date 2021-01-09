@@ -8,4 +8,6 @@ interface HillfortStore {
     fun countVisited(): Int
     fun findByFbId(id:String) : HillfortModel?
     fun clear()
+    fun setFavourite(hillfort: HillfortModel)
+    fun findFavourites(): List<HillfortModel>
 }

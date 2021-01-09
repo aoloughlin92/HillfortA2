@@ -27,7 +27,7 @@
             android:layout_height="wrap_content"
             android:layout_alignParentTop="true"
             android:layout_toEndOf="@+id/imageIcon"
-            android:layout_toStartOf="@id/imageButton"
+            android:layout_toStartOf="@id/favouriteButton"
             android:textSize="30sp"/>
 
         <TextView
@@ -36,15 +36,16 @@
             android:layout_height="wrap_content"
             android:layout_below="@id/hillfortTitle"
             android:layout_toEndOf="@+id/imageIcon"
-            android:layout_toStartOf="@id/imageButton"/>
+            android:layout_toStartOf="@id/favouriteButton"/>
 
         <ImageButton
-            android:id="@+id/imageButton"
+            android:id="@+id/favouriteButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentEnd="true"
             android:layout_marginEnd="8dp"
-            app:srcCompat="@android:drawable/star_big_off"
+            android:background="@color/colorPrimary"
+            app:srcCompat="@android:drawable/btn_star_big_off"
             android:contentDescription="@string/favouritebutton" />
 
     </RelativeLayout>

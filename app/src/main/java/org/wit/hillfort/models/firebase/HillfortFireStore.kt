@@ -25,9 +25,22 @@ class HillfortFireStore(val context: Context) : HillfortStore, AnkoLogger {
         return hillforts
     }
 
+    override fun findFavourites(): List<HillfortModel> {
+        val favourites = hillforts.filter{p-> p.favourite == true}
+        return favourites
+    }
+
     override fun findByFbId(id: String): HillfortModel? {
         val foundHillfort: HillfortModel? = hillforts.find { p -> p.fbId === id}
         return foundHillfort
+    }
+
+    override fun setFavourite(hillfort: HillfortModel) {
+        var foundHillfort: HillfortModel? = hillforts.find { p -> p.fbId == hillfort.fbId }
+        if (foundHillfort != null) {
+            foundHillfort.favourite = hillfort.favourite
+        }
+        db.child("users").child(userId).child("hillforts").child(hillfort.fbId).setValue(hillfort)
     }
 
     override fun countVisited(): Int {
@@ -61,9 +74,6 @@ class HillfortFireStore(val context: Context) : HillfortStore, AnkoLogger {
             foundHillfort.visited = hillfort.visited
             foundHillfort.date = hillfort.date
         }
-
-
-
         for(image in hillfort.images) {
             if ((image.length) > 0 && (image[0] != 'h')) {
                 updateImage(hillfort, image)
