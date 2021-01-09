@@ -22,7 +22,7 @@ class HillfortStoreRoom(val context: Context) : HillfortStore {
         return dao.findAll()
     }
 
-    override fun findById(id: Long): HillfortModel? {
+    override fun findByFbId(id: String): HillfortModel? {
         return dao.findById(id)
     }
 

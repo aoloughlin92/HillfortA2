@@ -15,7 +15,7 @@ interface HillfortListener {
 }
 
 class HillfortAdapter constructor(
-    private var hillforts: List<HillfortModel>,
+    private var hillforts: ArrayList<HillfortModel>,
     private val listener: HillfortListener
 ) :
     RecyclerView.Adapter<HillfortAdapter.MainHolder>() {
@@ -35,11 +35,13 @@ class HillfortAdapter constructor(
         holder.bind(hillfort,listener)
     }
 
+
     override fun getItemCount(): Int = hillforts.size
 
     class MainHolder constructor(itemView: View) : RecyclerView.ViewHolder(itemView) {
 
         fun bind(hillfort: HillfortModel, listener: HillfortListener) {
+            itemView.tag = hillfort.fbId
             itemView.hillfortTitle.text = hillfort.title
             itemView.description.text = hillfort.description
             if(hillfort.images.size>0) {

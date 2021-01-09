@@ -29,7 +29,9 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 app:titleTextColor="@color/colorPrimary" />
+
         </com.google.android.material.appbar.AppBarLayout>
+
 
         <ScrollView
             android:layout_width="match_parent"
@@ -95,7 +97,7 @@
                     android:layout_height="22dp"
                     android:layout_marginTop="8dp"
                     android:layout_marginEnd="28dp"
-                    android:text="00.000000"
+                    android:text="@string/latvalue"
                     android:textAlignment="center"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toEndOf="@+id/hillfortTitle"
@@ -107,7 +109,7 @@
                     android:layout_height="22dp"
                     android:layout_marginTop="8dp"
                     android:layout_marginEnd="28dp"
-                    android:text="00.000000"
+                    android:text="@string/lngvalue"
                     android:textAlignment="center"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintHorizontal_bias="0.519"

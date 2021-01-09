@@ -4,4 +4,5 @@
     <color name="colorPrimaryDark">#000000</color>
     <color name="colorAccent">#4c90af</color>
     <color name="colorInactive">#C3CED3</color>
+    <color name="ic_launcher_hillfort_background">#00755e</color>
 </resources>

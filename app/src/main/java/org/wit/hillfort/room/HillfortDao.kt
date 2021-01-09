@@ -13,7 +13,7 @@ interface HillfortDao {
     fun findAll(): List<HillfortModel>
 
     @Query("select * from HillfortModel where id = :id")
-    fun findById(id: Long): HillfortModel
+    fun findById(id: String): HillfortModel
 
     @Update
     fun update(hillfort: HillfortModel)
