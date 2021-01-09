@@ -73,6 +73,8 @@ class HillfortPresenter(view: BaseView): BasePresenter(view) , AnkoLogger {
         view?.finish()
     }
 
+
+
     fun doDelete() {
         app.hillforts.delete(hillfort)
         view?.finish()

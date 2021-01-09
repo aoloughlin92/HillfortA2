@@ -10,4 +10,5 @@ interface HillfortStore {
     fun clear()
     fun setFavourite(hillfort: HillfortModel)
     fun findFavourites(): List<HillfortModel>
+    fun findSearchResults(query: String): List<HillfortModel>
 }

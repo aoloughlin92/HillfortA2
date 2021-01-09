@@ -25,6 +25,11 @@ class HillfortFireStore(val context: Context) : HillfortStore, AnkoLogger {
         return hillforts
     }
 
+    override fun findSearchResults(query: String): List<HillfortModel> {
+        val results = hillforts.filter{p-> p.title.contains(query)}
+        return results
+    }
+
     override fun findFavourites(): List<HillfortModel> {
         val favourites = hillforts.filter{p-> p.favourite == true}
         return favourites

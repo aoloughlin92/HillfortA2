@@ -29,6 +29,15 @@ class HillfortListPresenter(view: BaseView): BasePresenter(view), AnkoLogger {
         view?.navigateTo(VIEW.FAVOURITES)
     }
 
+    fun doReturnResults(text: String){
+        doAsync{
+            val hillforts = app.hillforts.findSearchResults(text)
+            uiThread{
+                view?.showHillforts(hillforts)
+            }
+        }
+    }
+
     fun doFavourite(hillfort: HillfortModel, favourite: Boolean){
         hillfort.favourite = favourite
         app.hillforts.setFavourite(hillfort)

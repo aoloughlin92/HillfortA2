@@ -81,6 +81,11 @@ class HillfortJSONStore : HillfortStore, AnkoLogger {
         }
     }
 
+    override fun findSearchResults(query: String): List<HillfortModel> {
+        val results = hillforts.filter{p-> p.title.contains(query)}
+        return results
+    }
+
     override fun findFavourites(): List<HillfortModel> {
         val favourites = hillforts.filter{p-> p.favourite == true}
         return favourites

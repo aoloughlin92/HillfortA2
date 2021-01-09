@@ -1,8 +1,13 @@
 package org.wit.hillfort.views.hillfortlist
 
+import android.app.SearchManager
+import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.view.*
+import android.widget.AutoCompleteTextView
+import android.widget.SearchView
+import androidx.core.view.MenuItemCompat
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -46,11 +51,43 @@ class HillfortListView : BaseView(), HillfortListener {
 
     }
 
-
-    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+    override fun onCreateOptionsMenu(menu: Menu): Boolean {
         menuInflater.inflate(R.menu.menu_main, menu)
+        menu.getItem(0).setVisible(true)
+        //return super.onCreateOptionsMenu(menu)
+
+        val searchItem = menu.findItem(R.id.app_bar_search)
+        val searchView = searchItem?.actionView as SearchView
+
+        searchView.queryHint = getString(R.string.search)
+
+        searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
+            override fun onQueryTextSubmit(query: String?): Boolean {
+                info("Search has been submitted" + query)
+                if (query != null) {
+                    presenter.doReturnResults(query)
+                }
+                return true
+            }
+            override fun onQueryTextChange(newText: String?): Boolean {
+                if (newText != null) {
+                    //presenter.doReturnResults(newText)
+                    //TODO("Not yet implemented")
+                }
+                return true
+            }
+        })
+        searchView.setOnCloseListener(object : SearchView.OnCloseListener{
+            override fun onClose(): Boolean {
+                presenter.loadHillforts()
+                return false
+            }
+        })
+
         return super.onCreateOptionsMenu(menu)
     }
+
+
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item?.itemId) {
