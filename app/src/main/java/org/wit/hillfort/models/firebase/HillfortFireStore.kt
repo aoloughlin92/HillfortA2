@@ -62,6 +62,12 @@ class HillfortFireStore(val context: Context) : HillfortStore, AnkoLogger {
         val key = db.child("users").child(userId).child("hillforts").push().key
         key?.let {
             hillfort.fbId = key
+
+            hillfort.images.forEach{
+                if ((it.length) > 0 && (it[0] != 'h')) {
+                    updateImage(hillfort, it)
+                }
+            }
             hillforts.add(hillfort)
             db.child("users").child(userId).child("hillforts").child(key).setValue(hillfort)
         }
@@ -79,9 +85,9 @@ class HillfortFireStore(val context: Context) : HillfortStore, AnkoLogger {
             foundHillfort.visited = hillfort.visited
             foundHillfort.date = hillfort.date
         }
-        for(image in hillfort.images) {
-            if ((image.length) > 0 && (image[0] != 'h')) {
-                updateImage(hillfort, image)
+        hillfort.images.forEach{
+            if ((it.length) > 0 && (it[0] != 'h')) {
+                updateImage(hillfort, it)
             }
         }
         db.child("users").child(userId).child("hillforts").child(hillfort.fbId).setValue(hillfort)
