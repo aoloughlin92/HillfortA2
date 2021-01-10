@@ -4,15 +4,19 @@ import android.content.Intent
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
+import com.google.firebase.auth.FirebaseAuth
 import kotlinx.android.synthetic.main.activity_hillfort.*
 import kotlinx.android.synthetic.main.activity_hillfort_list.*
 import kotlinx.android.synthetic.main.activity_settings.*
 import kotlinx.android.synthetic.main.activity_settings.toolbar
 import org.jetbrains.anko.AnkoLogger
+import org.jetbrains.anko.email
 import org.jetbrains.anko.startActivityForResult
+import org.jetbrains.anko.toast
 import org.wit.hillfort.R
 import org.wit.hillfort.models.HillfortModel
 import org.wit.hillfort.views.BaseView
+import org.wit.hillfort.views.VIEW
 import org.wit.hillfort.views.hillfort.HillfortView
 import org.wit.hillfort.views.hillfortlist.HillfortAdapter
 import org.wit.hillfort.views.login.LoginView
@@ -27,25 +31,36 @@ class SettingsView : BaseView(), AnkoLogger {
         setContentView(R.layout.activity_settings)
         super.init(toolbar, true)
         presenter = initPresenter(SettingsPresenter(this)) as SettingsPresenter
+        val user = FirebaseAuth.getInstance().currentUser
+
+        if(user != null) {
+            settingsEmail.setText(user.email)
+
+        }
 
         presenter.doShowStats()
 
         btnUpdate.setOnClickListener(){
-            val email = settingsEmail.text.toString()
 
-            /*val findByEmail = app.users.findByEmail(email)
-            if (findByEmail != null && !email.equals(user.email)) {
-                toast(R.string.update_failed)
+            val email = settingsEmail.text.toString()
+            val password = settingsPassword.text.toString()
+            if(email.length>0 && email != user?.email) {
+                user!!.updateEmail(email)
+                    .addOnCompleteListener { task ->
+                        if (task.isSuccessful) {
+                            toast("User email address updated.")
+                        }
+                    }
             }
-            else{
-                val password = settingsPassword.text.toString()
-                user.email = email
-                user.password = password
-                info("Hillfort User Updated with email: $email and password: $password")
-                app.users.update(user)
-                setResult(AppCompatActivity.RESULT_OK)
-                startActivityForResult<HillfortListView>(0)
-            }*/
+            if(password.length>0) {
+                user!!.updatePassword(password)
+                    .addOnCompleteListener { task ->
+                        if (task.isSuccessful) {
+                            toast("User password updated.")
+                        }
+                    }
+            }
+
         }
     }
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
@@ -74,3 +89,6 @@ class SettingsView : BaseView(), AnkoLogger {
 
 
 }
+
+
+

@@ -27,6 +27,7 @@ class EditLocationPresenter(view: BaseView): BasePresenter(view) {
             .draggable(true)
             .position(loc)
         map.addMarker(options)
+        map?.uiSettings?.setZoomControlsEnabled(true)
         map.moveCamera(CameraUpdateFactory.newLatLngZoom(loc, location.zoom))
         view?.showLocation(loc.latitude, loc.longitude);
     }
