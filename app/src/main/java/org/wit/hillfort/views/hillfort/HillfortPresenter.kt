@@ -133,9 +133,7 @@ class HillfortPresenter(view: BaseView): BasePresenter(view), AnkoLogger {
     override fun doActivityResult(requestCode: Int, resultCode: Int, data: Intent) {
         when (requestCode) {
             IMAGE_REQUEST -> {
-                info("Image Request - Add Image")
                 hillfort.images.add(data.getData().toString())
-                info("Image Added")
                 view?.showHillfort(hillfort)
             }
             LOCATION_REQUEST -> {

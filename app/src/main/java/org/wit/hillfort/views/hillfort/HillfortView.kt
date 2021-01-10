@@ -109,7 +109,10 @@ class HillfortView : BaseView(), AnkoLogger, ImageListener {
 
   override fun onCreateOptionsMenu(menu: Menu): Boolean {
     menuInflater.inflate(R.menu.menu_hillfort, menu)
-    if(presenter.edit) menu.getItem(1).setVisible(true)
+    if(presenter.edit) {
+      menu.getItem(1).setVisible(true)
+      menu.getItem(3).setVisible(true)
+    }
     return super.onCreateOptionsMenu(menu)
   }
 
@@ -146,7 +149,8 @@ class HillfortView : BaseView(), AnkoLogger, ImageListener {
   override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
     super.onActivityResult(requestCode, resultCode, data)
     if(data != null){
-      presenter.doActivityResult(requestCode, resultCode, data)
+      //removed causes doActivityResult to run twice
+      //presenter.doActivityResult(requestCode, resultCode, data)
     }
   }
 
